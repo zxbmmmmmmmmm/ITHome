@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="ITHome.Views.NewsDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ITHome.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <Grid Margin="0,0,0,48">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Margin="32" Spacing="4">
+                <TextBlock Text="{x:Bind Item.Title,Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Item.PostDate,Converter={StaticResource DateConverter},Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
+                    
+                    <TextBlock Text="{x:Bind NewsSearch.Author,Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" Margin="8,0,0,0"/>
+
+                </StackPanel>
+            </StackPanel>
+            <controls:MarkdownTextBlock Text="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource HtmlToMarkdownConverter}}" Grid.Row="1" VerticalAlignment="Top" Margin="32,0" FontSize="16" muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"/>
+        </Grid>
+    </ScrollViewer>
+</Page>
