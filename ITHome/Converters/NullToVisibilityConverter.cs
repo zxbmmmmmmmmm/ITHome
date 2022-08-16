@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITHome.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,14 @@ namespace ITHome.Converters
                 (Visibility)Enum.Parse(typeof(Visibility), defaultInvisibility)
                 : Visibility.Collapsed;
             return value == null? invisibility : Visibility.Visible;*/
+
+            if(value is List<string> list)
+            {
+                if(list.Count == 0) return Visibility.Collapsed;
+                else return Visibility.Visible;
+            }
             if (value == null || value.ToString() == "")
             {
-
                 return Visibility.Collapsed;
             }
             else

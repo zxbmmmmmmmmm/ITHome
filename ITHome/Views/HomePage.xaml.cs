@@ -105,11 +105,20 @@ namespace ITHome.Views
         }
         private async void GetNewsList()
         {
-            var data = await ITHomeProxy.GetNewsList();
+            var timeStamp = (long)(DateTime.Now.ToLocalTime() - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
+            var data = await ITHomeProxy.GetNewsList(timeStamp.ToString() + "000");
             foreach (var news in data.News)
                 NewsList.Add(news);
         }
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private async void LoadMoreBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var timeStamp = (long)(NewsList[NewsList.Count - 1].PostDate - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
+            var data = await ITHomeProxy.GetNewsList(timeStamp.ToString() + "000");
+            foreach (var news in data.News)
+                NewsList.Add(news);
+        }
     }
 }

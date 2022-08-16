@@ -17,6 +17,11 @@ namespace ITHome.Converters
                 (Visibility)Enum.Parse(typeof(Visibility), defaultInvisibility)
                 : Visibility.Collapsed;
             return value == null? invisibility : Visibility.Visible;*/
+            if (value is List<string> list)
+            {
+                if (list.Count == 0) return Visibility.Visible;
+                else return Visibility.Collapsed;
+            }
             if (value == null || value.ToString() == "")
             {
                 return Visibility.Visible;

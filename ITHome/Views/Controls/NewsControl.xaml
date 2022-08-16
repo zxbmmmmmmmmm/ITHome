@@ -11,6 +11,7 @@
     d:DesignWidth="400">
 
     <Grid Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+
         <Grid Visibility="{x:Bind Item.ImageList,Converter={StaticResource NullToVisibilityInversionConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -20,7 +21,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <controls:ImageEx Source="{x:Bind Item.Image,Mode=OneWay}" Height="80" HorizontalAlignment="Left" CornerRadius="8"/>
+            <controls:ImageEx Source="{x:Bind Item.Image,Mode=OneWay}" Height="80" HorizontalAlignment="Left" CornerRadius="8" />
             <TextBlock Text="{x:Bind Item.Title,Mode=OneWay}" FontSize="17" TextWrapping="Wrap" Grid.Column="1" Margin="12,0,0,0" MaxLines="2" TextTrimming="CharacterEllipsis"/>
 
             <Grid Width="680" Grid.Column="1"/>

@@ -56,6 +56,9 @@
                                 <views1:NewsControl Item="{x:Bind Mode=OneWay}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListView.Footer>
+                            <Button x:Name="LoadMoreBtn" Margin="24,12" HorizontalAlignment="Stretch" Content="加载更多" FontSize="15" Click="LoadMoreBtn_Click"/>
+                        </ListView.Footer>
                     </ListView>
                 </Grid>
             </winui:TwoPaneView.Pane1>

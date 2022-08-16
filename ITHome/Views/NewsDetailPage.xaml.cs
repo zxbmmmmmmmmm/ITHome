@@ -71,6 +71,13 @@ namespace ITHome.Views
                 url = split[length - 2] + split[length - 1].Replace(".htm", "");
             }
             NewsSearch = await ITHomeProxy.GetNewsSearch(url);
+            GetComments();
+            
+        }
+        public async void GetComments()
+        {
+            var comments = await ITHomeProxy.GetCommentsList(Item.Id.ToString());
+            CommentsListView.ItemsSource = comments.Comments;
         }
     }
 }
