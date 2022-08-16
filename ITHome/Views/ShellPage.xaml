@@ -5,43 +5,95 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:behaviors="using:ITHome.Behaviors"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     xmlns:helpers="using:ITHome.Helpers"
     xmlns:views="using:ITHome.Views"
     Loaded="OnLoaded"
     mc:Ignorable="d">
+    <Grid x:Name="MainGrid">
+        <Border
+            x:Name="AppTitleBar"
+            Height="40"
+            Margin="98,0,0,0"
+            Padding="0,8,0,0"
+            VerticalAlignment="Top"
+            x:FieldModifier="public"
+            Background="Transparent"
+            Canvas.ZIndex="1"
+            IsHitTestVisible="True" Visibility="Visible">
+            <Grid>
+                <TextBlock x:Name="PageNameTextBlock" Text="{x:Bind Selected.Content,Mode=OneWay}" FontWeight="SemiBold" Margin="0,6,0,0" FontSize="14" Canvas.ZIndex="-1" x:FieldModifier="Public" HorizontalAlignment="Left" />
+                <StackPanel x:Name="TitieBarContent" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,0" Visibility="Collapsed">
+                    <StackPanel.Transitions>
+                        <TransitionCollection>
+                            <RepositionThemeTransition/>
+                        </TransitionCollection>
+                    </StackPanel.Transitions>
+                    <Image
+                        x:Name="AppFavIcon"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Source="ms-Appx:///Assets/StoreLogo.png"
+                        Stretch="Fill" />
+                    <TextBlock
+                        x:Name="AppTitle"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Margin="8,0,0,2"
+                        TextWrapping="NoWrap"
+                        Text="IT之家"/>
+                </StackPanel>
+            </Grid>
 
-    <winui:NavigationView
-        x:Name="navigationView"
-        IsBackButtonVisible="Visible"
-        IsBackEnabled="{x:Bind IsBackEnabled, Mode=OneWay}"
-        SelectedItem="{x:Bind Selected, Mode=OneWay}"
-        ItemInvoked="OnItemInvoked"
-        IsSettingsVisible="True"
-        ExpandedModeThresholdWidth="1280"
-        OpenPaneLength="150"
-        winui:BackdropMaterial.ApplyToRootOrPageBackground="True"
-        IsTitleBarAutoPaddingEnabled="False">
-        <winui:NavigationView.MenuItems>
-            <!--
+        </Border>
+        <winui:NavigationView
+            x:Name="navigationView"
+            IsBackButtonVisible="Visible"
+            IsBackEnabled="{x:Bind IsBackEnabled, Mode=OneWay}"
+            SelectedItem="{x:Bind Selected, Mode=OneWay}"
+            ItemInvoked="OnItemInvoked"
+            IsSettingsVisible="True"
+            ExpandedModeThresholdWidth="1280"
+            OpenPaneLength="150"
+            winui:BackdropMaterial.ApplyToRootOrPageBackground="True"
+            IsTitleBarAutoPaddingEnabled="False">
+            <winui:NavigationView.MenuItems>
+                <!--
             TODO: Change the symbols for each item as appropriate for your app
             More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
             Or to use an IconElement instead of a Symbol see https://github.com/microsoft/TemplateStudio/blob/main/docs/UWP/projectTypes/navigationpane.md
             Edit String/en-US/Resources.resw: Add a menu item title for each page
             -->
-            <winui:NavigationViewItem x:Uid="Shell_Home" Icon="Document" helpers:NavHelper.NavigateTo="views:HomePage" />
-            <winui:NavigationViewItem x:Uid="Shell_Quan" Icon="Document" helpers:NavHelper.NavigateTo="views:QuanPage" />
-        </winui:NavigationView.MenuItems>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Border x:Name="AppTitleBar" Height="32" VerticalAlignment="Center" Canvas.ZIndex="1">
-                <TextBlock Text="IT之家" Style="{StaticResource NavigationViewItemHeaderTextStyle}" VerticalAlignment="Center" Margin="12,0,0,0"/>
-            </Border>
-            <Frame x:Name="shellFrame" Grid.Row="1"/>
-        </Grid>
-    </winui:NavigationView>
+                <winui:NavigationViewItem x:Uid="Shell_Home" Icon="Home" helpers:NavHelper.NavigateTo="views:HomePage" />
+                <winui:NavigationViewItem x:Uid="Shell_Quan" Icon="Document" helpers:NavHelper.NavigateTo="views:QuanPage" />
+            </winui:NavigationView.MenuItems>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Frame x:Name="shellFrame" Grid.Row="1" Margin="0,48,0,0"/>
+            </Grid>
+        </winui:NavigationView>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="LargeLayout" >
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="shellFrame.Margin" Value="0"/>
+                        <Setter Target="AppTitleBar.Margin" Value="48,0,0,0"/>
+                        <Setter Target="PageNameTextBlock.Visibility" Value="Collapsed"/>
+
+                        <Setter Target="TitieBarContent.Visibility" Value="Visible"/>
+
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+
 </Page>

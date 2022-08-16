@@ -15,7 +15,7 @@
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
                 <ResourceDictionary Source="/Styles/Page.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
+            <Thickness x:Key="NavigationViewContentMargin">0,40,0,0</Thickness>
         </ResourceDictionary>
 
     </Application.Resources>
