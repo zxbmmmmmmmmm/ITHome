@@ -1,4 +1,5 @@
 ﻿using ITHome.Core.Models;
+using ITHome.Views.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,5 +36,10 @@ namespace ITHome.Views.Controls
             set { SetValue(CommentProperty, value); }
         }
         public static readonly DependencyProperty CommentProperty = DependencyProperty.Register("Comment", typeof(Comment), typeof(CommentTemplate), new PropertyMetadata(null));
+
+        private async void ExpandButton_Click(object sender, RoutedEventArgs e)
+        {
+            await new CommentContentDialog(Comment.Id).ShowAsync();
+        }
     }
 }

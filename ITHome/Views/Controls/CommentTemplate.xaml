@@ -33,6 +33,21 @@
             </StackPanel>
         </StackPanel>
         <TextBlock Text="{x:Bind Comment.CommentElements.Content}" TextWrapping="Wrap" Grid.Row="1" Margin="40,12,0,12" FontSize="16" IsTextSelectionEnabled="True" />
+        <Button x:Name="ExpandButton"
+                Click="ExpandButton_Click"
+                Grid.Row="2"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Visibility="{x:Bind Comment.ExpandCount,Converter={StaticResource NullToVisibilityConverter}}">
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="展开("/>
+                <TextBlock Text="{x:Bind Comment.ExpandCount}"/>
+                <TextBlock Text=")"/>
+
+            </StackPanel>
+
+        </Button>
         <StackPanel Orientation="Horizontal" Spacing="8" Grid.Row="2" HorizontalAlignment="Right">
             <Button Background="Transparent" BorderBrush="Transparent">
                 <StackPanel Orientation="Horizontal" Spacing="8">

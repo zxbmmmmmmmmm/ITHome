@@ -24,14 +24,18 @@ namespace ITHome.Core.Models
             return commentsList;
         }
     }
+    
     public class Comment
     {
         public int Id { get; set; }
         public int Support { get; set; }
         public int Against { get; set; }
+        public int ExpandCount { get; set; }
+
         public string City { get; set; }
         public DateTime PostTime { get; set; }
         public string Tail { get; set; }
+        public ObservableCollection<Comment> Children { get; set; }
         public CommentElements CommentElements { get; set; }
         public User User { get; set; }
         public static Comment CreateFromJson(JToken token)
@@ -41,13 +45,21 @@ namespace ITHome.Core.Models
                 Id = token.Value<int>("id"),
                 Support = token.Value<int>("support"),
                 Against = token.Value<int>("against"),
+                ExpandCount = token.Value<int>("expandCount"),
                 City = token.Value<string>("city"),
                 Tail = token.Value<string>("tail"),
                 PostTime = token.Value<DateTime>("postTime"),
                 CommentElements = CommentElements.CreateFromJson(token.Value<JToken>("elements")),
                 User = User.CreateFromJson(token.Value<JToken>("userInfo"))
             };
-            
+            if (token["children"] != null)
+            {
+                comment.Children = new ObservableCollection<Comment>();
+                foreach (var child in token["children"])
+                {
+                    comment.Children.Add(CreateFromJson(child));
+                }
+            } 
             return comment;
         }
     }

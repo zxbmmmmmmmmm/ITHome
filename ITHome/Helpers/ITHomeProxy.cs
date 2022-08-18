@@ -51,13 +51,19 @@ namespace ITHome.Helpers
             var sn = GetCommentSn(newsId);
             var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getnewscomment?sn={sn}", null);
             var commentsList = CommentsList.CreateFromJson(jObj);
-
             return commentsList;
         }
-        public static string GetCommentSn(string newsId)
+        public async static Task<Comment> GetCommentContent(string commentId)
+        {
+            var id = GetCommentContentId(commentId);
+            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getcommentcontent?commentid={id}", null);
+            var content = Comment.CreateFromJson(jObj["content"]["comment"]);
+            return content;
+        }
+        public static string GetCommentContentId(string id)
         {
             string sn = string.Empty;
-            var length = newsId.Length;
+            var length = id.Length;
             var times = 8 - length;
             if (length >= 8)
             {
@@ -65,7 +71,23 @@ namespace ITHome.Helpers
                 if (length == 0)
                     times = 0;
             }
-            string sb = newsId;
+            var encrypted = Encrypt(id, "(#i@x*l%");
+            var hex = BitConverter.ToString(encrypted, 0).Replace("-", string.Empty).ToLower();
+
+            return hex;
+        }
+        public static string GetCommentSn(string id)
+        {
+            string sn = string.Empty;
+            var length = id.Length;
+            var times = 8 - length;
+            if (length >= 8)
+            {
+                length %= 8;
+                if (length == 0)
+                    times = 0;
+            }
+            string sb = id;
             for (int i = 0; i < times; i++)
                 sb = sb + Convert.ToChar(0);
 
@@ -76,16 +98,6 @@ namespace ITHome.Helpers
             //var cnm = Decrypt_DES16(data, key);  
             var encrypted = Encrypt(sb, "(#i@x*l%");
             var hex = BitConverter.ToString(encrypted, 0).Replace("-", string.Empty).ToLower();
-            /*foreach (var element in encrypted)
-            {
-                var hexString = element.toRadixString(16);
-                if (hexString.length == 1)
-                {
-                    sn = sn +"0";
-                }
-                sn = sn +hexString;
-            }*/
-            //sn = UnicodeEncoding.Unicode.GetString(encrypted);
 
             return hex;
         }

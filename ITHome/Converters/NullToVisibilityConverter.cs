@@ -24,6 +24,11 @@ namespace ITHome.Converters
                 if(list.Count == 0) return Visibility.Collapsed;
                 else return Visibility.Visible;
             }
+            if (value is int num)
+            {
+                if (num == 0) return Visibility.Collapsed;
+                else return Visibility.Visible;
+            }
             if (value == null || value.ToString() == "")
             {
                 return Visibility.Collapsed;
