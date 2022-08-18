@@ -8,6 +8,9 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:html="using:ITHome.HTMLParser"
     xmlns:models="using:ITHome.Core.Models"
+    xmlns:controls1="using:ITHome.Views.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+
     mc:Ignorable="d">
     <ScrollViewer>
         <Grid Margin="0,0,0,48">
@@ -17,9 +20,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Margin="32,32,32,0" Spacing="4">
-                <TextBlock Text="{x:Bind Item.Title,Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Bind NewsSearch.Title,Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind Item.PostDate,Converter={StaticResource DateConverter},Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
+                    <TextBlock Text="{x:Bind NewsSearch.PostDate,Converter={StaticResource DateConverter},Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
                     
                     <TextBlock Text="{x:Bind NewsSearch.Author,Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" Margin="8,0,0,0"/>
 
@@ -27,48 +30,32 @@
             </StackPanel>
             <RichTextBlock html:HtmlProperties.Html="{x:Bind NewsSearch.Detail,Mode=OneWay}" Grid.Row="1" FontSize="16" VerticalAlignment="Top" Margin="32,0" />
             <controls:MarkdownTextBlock Text="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource HtmlToMarkdownConverter}}" Grid.Row="1" VerticalAlignment="Top" Margin="32,0" FontSize="16" muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Visibility="Collapsed"/>
-            <StackPanel Grid.Row="2" Margin="24,0" Spacing="4">
-                <TextBlock Text="评论" Style="{StaticResource SubtitleTextBlockStyle}" />
-                <Border BorderThickness="0,1,0,0" BorderBrush="LightGray"/>
-            </StackPanel>
-            <ListView x:Name="CommentsListView" Grid.Row="2" SelectionMode="None" Margin="0,36,0,0">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Comment">
-                        <Grid Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="12">
-                                <PersonPicture ProfilePicture="{x:Bind User.Avatar}" Height="30"/>
-                                <StackPanel>
-                                    <TextBlock Text="{x:Bind User.Nick}" FontSize="15"/>
-                                    <TextBlock Text="{x:Bind City}" Style="{StaticResource DetailBodyBaseMediumStyle}" FontSize="12"/>
-                                </StackPanel>
-                            </StackPanel>
-                            <TextBlock Text="{x:Bind CommentElements.Content}" Grid.Row="1" Margin="40,12" FontSize="16" IsTextSelectionEnabled="True"/>
-                            <StackPanel Orientation="Horizontal" Spacing="8" Grid.Row="2" HorizontalAlignment="Right">
-                                <Button Background="Transparent" BorderBrush="Transparent">
-                                    <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <FontIcon Glyph="&#xE74A;" FontSize="14"/>
-                                        <TextBlock Text="{x:Bind Support}"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Background="Transparent" BorderBrush="Transparent">
-                                    <StackPanel Orientation="Horizontal" Spacing="8">
-                                        <FontIcon Glyph="&#xE74B;" FontSize="14"/>
-                                        <TextBlock Text="{x:Bind Against}"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                            
-                            <Grid Width="2048"/>
+            <StackPanel Grid.Row="2" Margin="24,12">
+                <StackPanel x:Name="HotCommentsHeader" Spacing="4" Visibility="Collapsed">
+                    <TextBlock Text="热评" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8"/>
+                </StackPanel>
 
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                <ListView x:Name="HotCommentsListView" SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Comment">
+                            <controls1:CommentTemplate Comment="{x:Bind Mode=OneWay}" Margin="{StaticResource SmallTopBottomMargin}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+                <StackPanel x:Name="CommentsHeader" Spacing="4" Visibility="Collapsed">
+                    <TextBlock Text="评论" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8" />
+                </StackPanel>
+                
+                <ListView x:Name="CommentsListView" Grid.Row="2" SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Comment">
+                            <controls1:CommentTemplate Comment="{x:Bind Mode=OneWay}" Margin="{StaticResource SmallTopBottomMargin}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
         </Grid>
     </ScrollViewer>
 </Page>

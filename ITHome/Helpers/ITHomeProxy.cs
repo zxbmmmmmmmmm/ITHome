@@ -23,6 +23,12 @@ namespace ITHome.Helpers
             }
             return newsList;
         }
+        public async static Task<NewsSlideList> GetNewsSlideList()
+        {
+            var jObj = await NetworkHelper.GetArrayAsync($"https://api.ithome.com/json/slide/index", null);
+            var newsSlideList = NewsSlideList.CreateFromJson(jObj);
+            return newsSlideList;
+        }
         /*public async static Task<NewsList> GetNewsList(string ot)
         {
             var jObj = await NetworkHelper.GetAsync("https://api.ithome.com/json/newslist/news", null);
@@ -33,9 +39,9 @@ namespace ITHome.Helpers
             }
             return newsList;
         }*/
-        public async static Task<NewsSearch> GetNewsSearch(string url)
+        public async static Task<NewsSearch> GetNewsSearch(string id)
         {
-            var jObj = await NetworkHelper.GetAsync($"https://api.ithome.com/json/newssearch/{url}", null);
+            var jObj = await NetworkHelper.GetAsync($"https://api.ithome.com/json/newssearch/{id}", null);
             var newsSearch = NewsSearch.CreateFromJson(jObj);
 
             return newsSearch;

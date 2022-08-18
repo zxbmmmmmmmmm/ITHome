@@ -7,7 +7,8 @@ using System.Runtime.CompilerServices;
 using ITHome.Core.Models;
 using ITHome.Core.Services;
 using ITHome.Helpers;
-
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -19,7 +20,12 @@ namespace ITHome.Views
     {
         private News _selected;
         private WinUI.TwoPaneViewPriority _twoPanePriority;
+        DispatcherTimer _timer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(10),
+        };
 
+        public ObservableCollection<NewsSlide> NewsSlides = new ObservableCollection<NewsSlide>();
         public event EventHandler<bool> OnPageCanGoBackChanged;
 
         public News Selected
@@ -39,13 +45,39 @@ namespace ITHome.Views
         public HomePage()
         {
             InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
+            _timer.Tick += ChangeImage;
+            _timer.Start();
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        private void ChangeImage(object sender, object e)
         {
+            SlideFlipView.SelectedIndex += 1;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            
             base.OnNavigatedTo(e);
-            NewsList.Clear();
-            GetNewsList();
+            if(NewsList.Count == 0)
+            {
+                NewsList.Clear();
+                GetNewsList();
+            }
+
+        }
+
+        private async void GetNewsSlide()
+        {
+            var slides = await ITHomeProxy.GetNewsSlideList();
+            NewsSlides = slides.News;
+            NewsSlides.Insert(0, slides.News.Last());
+            NewsSlides.Add(slides.News.First());
+
+            SlideFlipView.ItemsSource = NewsSlides;
+            FlipViewPipsPager.NumberOfPages = NewsSlides.Count() - 2;
+            FlipViewPipsPager.MaxVisiblePips = NewsSlides.Count() - 2;
+
         }
 
         public bool TryCloseDetail()
@@ -109,6 +141,7 @@ namespace ITHome.Views
             var data = await ITHomeProxy.GetNewsList(timeStamp.ToString() + "000");
             foreach (var news in data.News)
                 NewsList.Add(news);
+            GetNewsSlide();
         }
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -119,6 +152,39 @@ namespace ITHome.Views
             var data = await ITHomeProxy.GetNewsList(timeStamp.ToString() + "000");
             foreach (var news in data.News)
                 NewsList.Add(news);
+        }
+
+        private void SlideListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var flip = sender as FlipView;
+            if (flip.SelectedIndex == NewsSlides.Count() - 1)//最后一个
+                flip.SelectedIndex = 1;
+            if (flip.SelectedIndex == 0)//第一个
+                flip.SelectedIndex = NewsSlides.Count() - 2;
+            FlipViewPipsPager.SelectedPageIndex = flip.SelectedIndex - 1;
+        }
+
+        private void FlipViewPipsPager_SelectedIndexChanged(WinUI.PipsPager sender, WinUI.PipsPagerSelectedIndexChangedEventArgs args)
+        {
+            SlideFlipView.SelectedIndex = sender.SelectedPageIndex + 1;
+        }
+
+        private void SlideListView_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _timer.Stop();
+        }
+
+        private void SlideListView_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _timer.Start();
+        }
+
+        private void SlideImage_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            var image = sender as Control;
+            NewsDetail.NewsUrl = image.Tag.ToString();
+            //Selected.Url = image.Tag.ToString();
+
         }
     }
 }

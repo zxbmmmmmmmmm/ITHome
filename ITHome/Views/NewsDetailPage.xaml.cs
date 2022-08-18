@@ -1,20 +1,8 @@
 ﻿using ITHome.Core.Models;
 using ITHome.Helpers;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -32,12 +20,18 @@ namespace ITHome.Views
             this.DataContextChanged += (s, e) => Bindings.Update();
         }
         public event PropertyChangedEventHandler PropertyChanged;
+        public string NewsUrl
+        {
+            get { return (string)GetValue(NewsUrlProperty); }
+            set { SetValue(NewsUrlProperty, value); }
+        }
+        public static readonly DependencyProperty NewsUrlProperty = DependencyProperty.Register(nameof(NewsUrl), typeof(string), typeof(HomeListItemControl), new PropertyMetadata(null, OnItemPropertyChanged));
         public News Item
         {
             get { return (News)GetValue(ItemProperty); }
             set { SetValue(ItemProperty, value); }
         }
-        public static readonly DependencyProperty ItemProperty = DependencyProperty.Register(nameof(Item), typeof(News), typeof(HomeListItemControl), new PropertyMetadata(null, OnItemPropertyChanged));
+        public static readonly DependencyProperty ItemProperty = DependencyProperty.Register(nameof(Item), typeof(News), typeof(HomeListItemControl), new PropertyMetadata(null, null));
         public NewsSearch NewsSearch
         {
             get => _newsSearch;
@@ -50,7 +44,7 @@ namespace ITHome.Views
                 }
             }
         }
-        private NewsSearch _newsSearch;
+        private NewsSearch _newsSearch = new NewsSearch();
 
         private static void OnItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -59,24 +53,41 @@ namespace ITHome.Views
         }
         public async void GetNewsSearch()
         {
-            var split = Item.Url.Split("/");
-            var length = split.Length;
-            string url;
-            if(Item.Url.Contains("la"))//广告
+            if (Item != null)
             {
-                url = split[length - 1].Replace(".htm", "");
+                NewsSearch.Title = Item.Title;
+                NewsSearch.PostDate = Item.PostDate;
+
+            }
+
+            var split = NewsUrl.Split("/");
+            var length = split.Length;
+            string id;
+            if(NewsUrl.Contains("la"))//广告
+            {
+                id = split[length - 1].Replace(".htm", "");
             }
             else
             {
-                url = split[length - 2] + split[length - 1].Replace(".htm", "");
+                id = split[length - 2] + split[length - 1].Replace(".htm", "");
             }
-            NewsSearch = await ITHomeProxy.GetNewsSearch(url);
+            NewsSearch = await ITHomeProxy.GetNewsSearch(id);
             GetComments();
             
         }
         public async void GetComments()
         {
-            var comments = await ITHomeProxy.GetCommentsList(Item.Id.ToString());
+            var comments = await ITHomeProxy.GetCommentsList(NewsSearch.Id.ToString());
+            if (comments.Comments.Count > 0)
+                CommentsHeader.Visibility = Visibility.Visible;
+            else            
+                CommentsHeader.Visibility = Visibility.Collapsed;
+
+            if (comments.HotComments.Count > 0)
+                HotCommentsHeader.Visibility = Visibility.Visible;
+            else
+                HotCommentsHeader.Visibility = Visibility.Collapsed;
+            HotCommentsListView.ItemsSource = comments.HotComments;
             CommentsListView.ItemsSource = comments.Comments;
         }
     }

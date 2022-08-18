@@ -9,7 +9,6 @@ namespace ITHome.Core.Models
 {
     public class NewsList
     {
-        [JsonProperty("newslist")]
         public  ObservableCollection<News> News { get; set; }
         public static NewsList CreateFromJson(JToken token)
         {
@@ -19,17 +18,11 @@ namespace ITHome.Core.Models
     }
     public class News
     {
-        [JsonProperty("newsid")]
         public int Id { get; set; }
-        [JsonProperty("url")]
         public string Url { get; set; }
-        [JsonProperty("title")]
         public string Title { get; set; }
-        [JsonProperty("image")]
         public string Image { get; set; }
-        [JsonProperty("commentcount")]
         public int CommentCount { get; set; }
-        [JsonProperty("postdate")]
         public DateTime PostDate { get; set; }
         public List<string> ImageList { get; set; }
         public static News CreateFromJson(JToken token)
@@ -54,18 +47,25 @@ namespace ITHome.Core.Models
     }
     public class NewsSearch
     {
+        public string Title { get; set; }
+        public int Id { get; set; }
         public string Detail { get; set; }
         public string Author { get; set; }
         public string Editer { get; set; }
+        public DateTime? PostDate { get; set; }
+
         public List<NewsTag> Tags { get; set; }
         public static NewsSearch CreateFromJson(JToken token)
         {
             var newssearch = new NewsSearch
             {
-                Detail = token.Value<string>("detail"),
+                Id = token.Value<int>("newsid"),
+                Title = token.Value<string>("title"),
                 Author = token.Value<string>("newsauthor"),
                 Editer = token.Value<string>("z"),
+                PostDate = token.Value<DateTime>("postdate"),
             };
+            newssearch.Detail = token.Value<string>("detail").Replace("&nbsp;", "");
             if (token["newstags"] != null)
             {
                 newssearch.Tags = new List<NewsTag>();

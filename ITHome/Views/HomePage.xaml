@@ -7,11 +7,12 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    xmlns:model="using:ITHome.Core.Models"
+    xmlns:models="using:ITHome.Core.Models"
     xmlns:views1="using:ITHome.Views.Controls"
     xmlns:toolkitConverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:converters="using:ITHome.Converters"
     xmlns:views="using:ITHome.Views"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     winui:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
     <Page.Resources>
@@ -42,6 +43,7 @@
             WideModeConfiguration="LeftRight"
             TallModeConfiguration="SinglePane"
             HorizontalAlignment="Stretch"
+            x:FieldModifier="Public"
             VerticalAlignment="Stretch" winui:BackdropMaterial.ApplyToRootOrPageBackground="True">
             <winui:TwoPaneView.Pane1>
                 <Grid>
@@ -50,10 +52,29 @@
                         IsItemClickEnabled="True"
                         ItemClick="OnItemClick"
                         ItemsSource="{x:Bind NewsList,Mode=OneWay}"
-                        SelectedItem="{x:Bind Selected, Mode=TwoWay}">
+                        SelectedItem="{x:Bind Selected, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListView.Header>
+                            <Grid>
+                                <FlipView x:Name="SlideFlipView" Height="181" Margin="0" Padding="0" ItemsSource="{x:Bind NewsSlides}" SelectionChanged="SlideListView_SelectionChanged" PointerEntered="SlideListView_PointerEntered" PointerExited="SlideListView_PointerExited" winui:BackdropMaterial.ApplyToRootOrPageBackground="True">
+                                    <FlipView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:NewsSlide">
+                                            <controls:ImageEx x:Name="SlideImage" Source="{x:Bind Image}" Tag="{x:Bind Link}" Tapped="SlideImage_Tapped" CornerRadius="8" Margin="24,16"/>
+                                            <!--<views1:NewsSliderTemplate NewsSlide="{x:Bind}"/>-->
+                                        </DataTemplate>
+                                    </FlipView.ItemTemplate>
+                                </FlipView>
+                                <winui:PipsPager x:Name="FlipViewPipsPager"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Margin="0, 0, 0, -6"
+                                    NumberOfPages="{x:Bind NewsSlides.Count,Mode=OneWay}"
+                                    Canvas.ZIndex="2" MaxVisiblePips="10" SelectedIndexChanged="FlipViewPipsPager_SelectedIndexChanged"/>
+                            </Grid>
+
+                        </ListView.Header>
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="model:News">
-                                <views1:NewsControl Item="{x:Bind Mode=OneWay}" />
+                            <DataTemplate x:DataType="models:News">
+                                <views1:NewsControl Item="{x:Bind Mode=OneWay}"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                         <ListView.Footer>
@@ -62,10 +83,10 @@
                     </ListView>
                 </Grid>
             </winui:TwoPaneView.Pane1>
-            <winui:TwoPaneView.Pane2>
-                <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                    <Frame>
-                        <views:NewsDetailPage Item="{x:Bind Selected,Mode=OneWay}"/>
+            <winui:TwoPaneView.Pane2 >
+                <Grid>
+                    <Frame x:Name="RightFrame" x:FieldModifier="Public">
+                        <views:NewsDetailPage x:Name="NewsDetail" Item="{x:Bind Selected,Mode=OneWay}" NewsUrl="{x:Bind Selected.Url,Mode=OneWay}"/>
                     </Frame>
                 </Grid>
             </winui:TwoPaneView.Pane2>

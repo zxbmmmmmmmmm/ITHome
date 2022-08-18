@@ -161,11 +161,17 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="StateTriggers\ControlSizeTrigger.cs" />
+    <Compile Include="Views\Controls\CommentTemplate.xaml.cs">
+      <DependentUpon>CommentTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\NewsControl.xaml.cs">
       <DependentUpon>NewsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\NewsSliderTemplate.xaml.cs">
+      <DependentUpon>NewsSliderTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HomeDetailControl.xaml.cs">
       <DependentUpon>HomeDetailControl.xaml</DependentUpon>
@@ -220,11 +226,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\CommentTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\NewsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\NewsSliderTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -266,6 +280,7 @@
     <Compile Include="Helpers\ResourceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\App\ImagePlaceholder.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
