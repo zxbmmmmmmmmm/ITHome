@@ -143,7 +143,7 @@ namespace ITHome.Views
         {
             var timeStamp = (long)(DateTime.Now.ToLocalTime() - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
             var data = await ITHomeProxy.GetNewsList(timeStamp.ToString() + "000");
-            foreach (var news in data.News)
+            foreach (var news in data.NewsItem)
                 NewsList.Add(news);
             GetNewsSlide();
 
@@ -155,7 +155,7 @@ namespace ITHome.Views
         {
             var timeStamp = (long)(NewsList[NewsList.Count - 1].PostDate - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
             var data = await ITHomeProxy.GetNewsList(timeStamp.ToString() + "000");
-            foreach (var news in data.News)
+            foreach (var news in data.NewsItem)
                 NewsList.Add(news);
         }
 
@@ -195,6 +195,18 @@ namespace ITHome.Views
                 OnPageCanGoBackChanged?.Invoke(this, true);
                 TwoPanePriority = WinUI.TwoPaneViewPriority.Pane2;
             }
+        }
+
+        private void NewsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(RightFrame.BackStack.Count >0)
+            {
+                RightFrame.BackStack.Clear();
+                RightFrame.Navigate(typeof(NewsDetailPage));
+                var page = (NewsDetailPage)RightFrame.Content;
+                page.Item = (sender as ListView).SelectedItem as News;
+            }
+            //RightFrame.GoBack();
         }
     }
 }

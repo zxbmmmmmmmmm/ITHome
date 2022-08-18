@@ -12,7 +12,7 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
 
     mc:Ignorable="d">
-    <ScrollViewer>
+    <ScrollViewer x:Name="MainScrollViewer">
         <Grid Margin="0,0,0,48">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -31,7 +31,24 @@
             <RichTextBlock html:HtmlProperties.Html="{x:Bind NewsSearch.Detail,Mode=OneWay}" Grid.Row="1" FontSize="16" VerticalAlignment="Top" Margin="32,0" />
             <controls:MarkdownTextBlock Text="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource HtmlToMarkdownConverter}}" Grid.Row="1" VerticalAlignment="Top" Margin="32,0" FontSize="16" muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Visibility="Collapsed"/>
             <StackPanel Grid.Row="2" Margin="24,12">
-                <StackPanel x:Name="HotCommentsHeader" Spacing="4" Visibility="Collapsed">
+                <TextBlock Text="推荐阅读" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8" />
+
+                <ListView x:Name="RelatedNewsListView"
+                          SelectionMode="None"
+                          HorizontalAlignment="Stretch"
+                          MaxHeight="312"
+                          ScrollViewer.VerticalScrollMode="Disabled"                        
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                          HorizontalContentAlignment="Stretch"
+                          IsItemClickEnabled="True"
+                          ItemClick="RelatedNewsListView_ItemClick">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:News">
+                            <controls1:NewsControl Item="{x:Bind Mode=OneWay}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackPanel x:Name="HotCommentsHeader" Spacing="4" Visibility="Collapsed" Margin="{StaticResource SmallTopMargin}">
                     <TextBlock Text="热评" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8"/>
                 </StackPanel>
 

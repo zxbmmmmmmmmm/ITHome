@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using ITHome.Helpers;
 using ITHome.Services;
-
+using ITHome.Views.Dialogs;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -85,5 +85,10 @@ namespace ITHome.Views
         }
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await new LoginDialog().ShowAsync();
+        }
     }
 }

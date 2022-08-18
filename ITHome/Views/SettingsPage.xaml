@@ -63,6 +63,7 @@
 
                 <HyperlinkButton x:Uid="Settings_PrivacyTermsLink" Margin="{StaticResource XSmallTopMargin}" />
             </StackPanel>
+            <Button Content="登录" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Page>

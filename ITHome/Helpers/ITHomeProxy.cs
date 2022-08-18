@@ -16,10 +16,10 @@ namespace ITHome.Helpers
         public async static Task<NewsList> GetNewsList(string ot)
         {
             var jObj = await NetworkHelper.GetAsync($"https://m.ithome.com/api/news/newslistpageget?page=0&ot={ot}", null);
-            var newsList = new NewsList { News = new ObservableCollection<News>()};
+            var newsList = new NewsList { NewsItem = new ObservableCollection<News>()};
             foreach(var news in jObj["Result"])
             {
-                newsList.News.Add(News.CreateFromJson(news));
+                newsList.NewsItem.Add(News.CreateFromJson(news));
             }
             return newsList;
         }
@@ -41,22 +41,28 @@ namespace ITHome.Helpers
         }*/
         public async static Task<NewsSearch> GetNewsSearch(string id)
         {
-            var jObj = await NetworkHelper.GetAsync($"https://api.ithome.com/json/newssearch/{id}", null);
+            var jObj = await NetworkHelper.GetAsync($"https://api.ithome.com/json/newssearch/{id}", Common.Settings.UserHash);
             var newsSearch = NewsSearch.CreateFromJson(jObj);
 
             return newsSearch;
         }
+        public async static Task<NewsList> GetRelatedNews(string id)
+        {
+            var jObj = await NetworkHelper.GetAsync($"https://napi.ithome.com/api/news/getrelatednews?newsid={id}", Common.Settings.UserHash);
+            var newsList = NewsList.CreateFromJson(jObj["data"]["relatedNewsResponseModels"]);
+            return newsList;
+        }
         public async static Task<CommentsList> GetCommentsList(string newsId)
         {
             var sn = GetCommentSn(newsId);
-            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getnewscomment?sn={sn}", null);
+            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getnewscomment?sn={sn}", Common.Settings.UserHash);
             var commentsList = CommentsList.CreateFromJson(jObj);
             return commentsList;
         }
         public async static Task<Comment> GetCommentContent(string commentId)
         {
             var id = GetCommentContentId(commentId);
-            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getcommentcontent?commentid={id}", null);
+            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getcommentcontent?commentid={id}", Common.Settings.UserHash);
             var content = Comment.CreateFromJson(jObj["content"]["comment"]);
             return content;
         }

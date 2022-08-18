@@ -53,7 +53,7 @@
                         IsItemClickEnabled="True"
                         ItemClick="OnItemClick"
                         ItemsSource="{x:Bind NewsList,Mode=OneWay}"
-                        SelectedItem="{x:Bind Selected, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        SelectedItem="{x:Bind Selected, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="NewsListView_SelectionChanged">
                         <ListView.Header>
                             <Grid>
                                 <FlipView x:Name="SlideFlipView" Height="181" Margin="0" Padding="0" ItemsSource="{x:Bind NewsSlides}" SelectionChanged="SlideListView_SelectionChanged" PointerEntered="SlideListView_PointerEntered" PointerExited="SlideListView_PointerExited" winui:BackdropMaterial.ApplyToRootOrPageBackground="True">

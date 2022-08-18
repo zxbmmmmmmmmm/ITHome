@@ -26,7 +26,7 @@
 
             <Grid Width="680" Grid.Column="1"/>
             <TextBlock Text="{x:Bind Item.PostDate,Converter={StaticResource DateConverter}}"  Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="12,0,0,0" Grid.Column="1" VerticalAlignment="Bottom"/>
-            <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Bottom" Spacing="4">
+            <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Bottom" Spacing="4" Visibility="{x:Bind Item.CommentCount,Converter={StaticResource NullToVisibilityConverter}}">
                 <TextBlock Text="{x:Bind Item.CommentCount}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                 <TextBlock Text="评" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
             </StackPanel>

@@ -9,10 +9,13 @@ namespace ITHome.Core.Models
 {
     public class NewsList
     {
-        public  ObservableCollection<News> News { get; set; }
+        public  ObservableCollection<News> NewsItem { get; set; }
         public static NewsList CreateFromJson(JToken token)
         {
             var newsList = new NewsList();
+            newsList.NewsItem = new ObservableCollection<News>();
+            foreach (var item in token)
+                newsList.NewsItem.Add(News.CreateFromJson(item));
             return newsList;
         }
     }
@@ -38,6 +41,14 @@ namespace ITHome.Core.Models
                 CommentCount = token.Value<int>("commentcount"),
                 PostDate = token.Value<DateTime>("postdate"),
             };
+            if(news.Title == null)
+            {
+                news.Title = token.Value<string>("newstitle");
+            }
+            if (news.Image == null)
+            {
+                news.Image = token.Value<string>("img");
+            }
             if (token["imagelist"]!= null)
             {
                 news.ImageList = new List<string>();
