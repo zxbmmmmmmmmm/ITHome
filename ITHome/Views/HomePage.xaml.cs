@@ -47,6 +47,7 @@ namespace ITHome.Views
         {
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
+            RequestedTheme = (Window.Current.Content as FrameworkElement).RequestedTheme;
             _timer.Tick += ChangeImage;
             _timer.Start();
         }

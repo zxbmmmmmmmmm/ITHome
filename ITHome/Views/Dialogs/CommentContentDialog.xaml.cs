@@ -23,6 +23,7 @@ namespace ITHome.Views.Dialogs
         public CommentContentDialog(int commentId)
         {
             this.InitializeComponent();
+            RequestedTheme = (Window.Current.Content as FrameworkElement).RequestedTheme;
             GetComment(commentId);
         }
 
