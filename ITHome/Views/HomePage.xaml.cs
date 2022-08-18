@@ -8,6 +8,7 @@ using ITHome.Core.Models;
 using ITHome.Core.Services;
 using ITHome.Helpers;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -185,6 +186,11 @@ namespace ITHome.Views
             var image = sender as Control;
             NewsDetail.NewsUrl = image.Tag.ToString();
             NewsListView.SelectedItem = null;
+            if (twoPaneView.Mode == WinUI.TwoPaneViewMode.SinglePane)
+            {
+                OnPageCanGoBackChanged?.Invoke(this, true);
+                TwoPanePriority = WinUI.TwoPaneViewPriority.Pane2;
+            }
         }
     }
 }
