@@ -181,10 +181,10 @@ namespace ITHome.Views
 
         private void SlideImage_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
+            
             var image = sender as Control;
             NewsDetail.NewsUrl = image.Tag.ToString();
-            //Selected.Url = image.Tag.ToString();
-
+            NewsListView.SelectedItem = null;
         }
     }
 }

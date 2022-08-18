@@ -1,8 +1,7 @@
 ﻿<Application
     x:Class="ITHome.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    >
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:Microsoft.UI.Xaml.Controls">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -16,6 +15,7 @@
                 <ResourceDictionary Source="/Styles/Page.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Thickness x:Key="NavigationViewContentMargin">0,40,0,0</Thickness>
+
         </ResourceDictionary>
 
     </Application.Resources>

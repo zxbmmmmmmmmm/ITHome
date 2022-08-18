@@ -64,6 +64,7 @@ namespace ITHome.Core.Models
                 Nick = token.Value<string>("userNick"),
                 Avatar = token.Value<string>("userAvatar"),
             };
+            //user.Avatar.Replace("https://avatar.ithome.com/avatars/001/92/91/39_60.jpg", "ms-Appx:///Assets/App/guest.png");
             return user;
         }
     }

@@ -58,6 +58,8 @@ namespace ITHome.Views
             coreTitleBar.ExtendViewIntoTitleBar = true;
             var appTitleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             appTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
             Window.Current.SetTitleBar(AppTitleBar);
         }
 
@@ -83,7 +85,7 @@ namespace ITHome.Views
             IsBackEnabled = NavigationService.CanGoBack;
             if (e.SourcePageType == typeof(SettingsPage))
             {
-                Selected = navigationView.SettingsItem as WinUI.NavigationViewItem;
+                Selected = SettingsItem as WinUI.NavigationViewItem;
                 return;
             }
 
@@ -121,6 +123,7 @@ namespace ITHome.Views
 
         private void OnItemInvoked(WinUI.NavigationView sender, WinUI.NavigationViewItemInvokedEventArgs args)
         {
+
             if (args.IsSettingsInvoked)
             {
                 NavigationService.Navigate(typeof(SettingsPage), null, args.RecommendedNavigationTransitionInfo);

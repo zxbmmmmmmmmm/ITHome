@@ -7,5 +7,6 @@
     <converters:HtmlToMarkdownConverter x:Name="HtmlToMarkdownConverter"/>
     <converters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
     <converters:NullToVisibilityInversionConverter x:Name="NullToVisibilityInversionConverter"/>
+    <converters:BoolVisibilityNegationConverter x:Name="BoolVisibilityNegationConverter"/>
 
 </ResourceDictionary>

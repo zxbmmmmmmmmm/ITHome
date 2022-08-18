@@ -48,6 +48,7 @@
             <winui:TwoPaneView.Pane1>
                 <Grid>
                     <ListView
+                        x:Name="NewsListView"
                         Grid.Row="1"
                         IsItemClickEnabled="True"
                         ItemClick="OnItemClick"

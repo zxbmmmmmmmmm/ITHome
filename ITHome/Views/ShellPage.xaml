@@ -14,7 +14,7 @@
         <Border
             x:Name="AppTitleBar"
             Height="40"
-            Margin="98,0,0,0"
+            Margin="92,0,0,0"
             Padding="0,8,0,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
@@ -22,7 +22,7 @@
             Canvas.ZIndex="1"
             IsHitTestVisible="True" Visibility="Visible">
             <Grid>
-                <TextBlock x:Name="PageNameTextBlock" Text="{x:Bind Selected.Content,Mode=OneWay}" FontWeight="SemiBold" Margin="0,6,0,0" FontSize="14" Canvas.ZIndex="-1" x:FieldModifier="Public" HorizontalAlignment="Left" />
+                <TextBlock x:Name="PageNameTextBlock" Text="{x:Bind Selected.Tag,Mode=OneWay}" FontWeight="SemiBold" Margin="0,6,0,0" FontSize="14" Canvas.ZIndex="-1" x:FieldModifier="Public" HorizontalAlignment="Left" />
                 <StackPanel x:Name="TitieBarContent" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,0" Visibility="Collapsed">
                     <StackPanel.Transitions>
                         <TransitionCollection>
@@ -54,21 +54,42 @@
             IsBackEnabled="{x:Bind IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind Selected, Mode=OneWay}"
             ItemInvoked="OnItemInvoked"
-            IsSettingsVisible="True"
-            ExpandedModeThresholdWidth="1280"
-            OpenPaneLength="150"
+            IsSettingsVisible="False"
+            PaneDisplayMode="LeftMinimal"           
+            OpenPaneLength="92"
+            IsPaneToggleButtonVisible="True"
             winui:BackdropMaterial.ApplyToRootOrPageBackground="True"
             IsTitleBarAutoPaddingEnabled="False">
+
             <winui:NavigationView.MenuItems>
-                <!--
-            TODO: Change the symbols for each item as appropriate for your app
-            More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
-            Or to use an IconElement instead of a Symbol see https://github.com/microsoft/TemplateStudio/blob/main/docs/UWP/projectTypes/navigationpane.md
-            Edit String/en-US/Resources.resw: Add a menu item title for each page
-            -->
-                <winui:NavigationViewItem x:Uid="Shell_Home" Icon="Home" helpers:NavHelper.NavigateTo="views:HomePage" />
-                <winui:NavigationViewItem x:Uid="Shell_Quan" Icon="Document" helpers:NavHelper.NavigateTo="views:QuanPage" />
+                <winui:NavigationViewItem x:Name="HomeItem" helpers:NavHelper.NavigateTo="views:HomePage" Height="64" Tag="主页">
+                    <StackPanel HorizontalAlignment="Center" Margin="7,0,0,0">
+                        <FontIcon Glyph="&#xE10F;" FontSize="21" HorizontalAlignment="Center"/>
+                        <TextBlock Text="主页" HorizontalAlignment="Center" Margin="0,1,0,0" FontSize="10" Visibility="{x:Bind HomeItem.IsSelected,Converter={StaticResource BoolVisibilityNegationConverter},Mode=OneWay}"/>
+                    </StackPanel>
+                </winui:NavigationViewItem>
+                <winui:NavigationViewItem x:Name="QuanItem" helpers:NavHelper.NavigateTo="views:QuanPage" Height="64" Tag="圈子">
+                    <StackPanel Margin="7,0,0,0">
+                        <FontIcon Glyph="&#xE8F2;" FontSize="21" HorizontalAlignment="Center" Canvas.ZIndex="5"/>
+                        <TextBlock Text="圈子" HorizontalAlignment="Center" Margin="0,1,0,0" FontSize="10" Visibility="{x:Bind QuanItem.IsSelected,Converter={StaticResource BoolVisibilityNegationConverter},Mode=OneWay}"/>
+                    </StackPanel>
+                </winui:NavigationViewItem>
             </winui:NavigationView.MenuItems>
+            <winui:NavigationView.FooterMenuItems>
+                <winui:NavigationViewItem x:Name="SettingsItem" helpers:NavHelper.NavigateTo="views:SettingsPage" Height="64" Tag="圈子">
+                    <StackPanel Margin="7,0,0,0">
+                        <FontIcon Glyph="&#xE115;" FontSize="21" HorizontalAlignment="Center">
+                            <FontIcon.Transitions>
+                                <TransitionCollection>
+                                    <RepositionThemeTransition/>
+                                </TransitionCollection>
+                            </FontIcon.Transitions>
+                        </FontIcon>
+                        <TextBlock Text="设置" HorizontalAlignment="Center" Margin="0,1,0,0" FontSize="10" Visibility="{x:Bind SettingsItem.IsSelected,Converter={StaticResource BoolVisibilityNegationConverter},Mode=OneWay}"/>
+                    </StackPanel>
+                </winui:NavigationViewItem>
+            </winui:NavigationView.FooterMenuItems>
+          
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -85,11 +106,13 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="shellFrame.Margin" Value="0"/>
+                        <Setter Target="navigationView.PaneDisplayMode" Value="Left"/>
+                        <Setter Target="navigationView.IsPaneToggleButtonVisible" Value="False"/>
+                        <Setter Target="navigationView.OpenPaneLength" Value="72"/>
+
                         <Setter Target="AppTitleBar.Margin" Value="48,0,0,0"/>
                         <Setter Target="PageNameTextBlock.Visibility" Value="Collapsed"/>
-
                         <Setter Target="TitieBarContent.Visibility" Value="Visible"/>
-
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
