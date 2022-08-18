@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-
+using ITHome.Core.Helpers;
 using ITHome.Core.Models;
 using ITHome.Core.Services;
 using ITHome.Helpers;
+using ITHome.Services;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
@@ -55,6 +56,7 @@ namespace ITHome.Views
         private void ChangeImage(object sender, object e)
         {
             SlideFlipView.SelectedIndex += 1;
+            Singleton<LiveTileService>.Instance.SampleUpdate(NewsList[FlipViewPipsPager.SelectedPageIndex]);//更新动态磁贴(假的)
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -144,6 +146,7 @@ namespace ITHome.Views
             foreach (var news in data.News)
                 NewsList.Add(news);
             GetNewsSlide();
+
         }
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

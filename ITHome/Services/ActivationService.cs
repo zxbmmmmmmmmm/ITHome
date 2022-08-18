@@ -91,7 +91,6 @@ namespace ITHome.Services
         private async Task StartupAsync()
         {
             await ThemeSelectorService.SetRequestedThemeAsync();
-            Singleton<LiveTileService>.Instance.SampleUpdate();
             await Task.CompletedTask;
         }
 

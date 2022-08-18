@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using ITHome.Core.Models;
 using Microsoft.Toolkit.Uwp.Notifications;
 
 using Windows.UI.Notifications;
@@ -11,19 +11,18 @@ namespace ITHome.Services
     internal partial class LiveTileService
     {
         // More about Live Tiles Notifications at https://docs.microsoft.com/windows/uwp/controls-and-patterns/tiles-and-notifications-sending-a-local-tile-notification
-        public void SampleUpdate()
+        public void SampleUpdate(News news)
         {
             // These would be initialized with actual data
-            string from = "Jennifer Parker";
-            string subject = "Photos from our trip";
-            string body = "Check out these awesome photos I took while in New Zealand!";
+            string from = news.Title;
+            string body = news.Description;
 
             // Construct the tile content
             var content = new TileContent()
             {
                 Visual = new TileVisual()
                 {
-                    Arguments = "Jennifer Parker",
+                    Arguments = news.Title,
                     TileMedium = new TileBinding()
                     {
                         Content = new TileBindingContentAdaptive()
@@ -32,17 +31,16 @@ namespace ITHome.Services
                             {
                                 new AdaptiveText()
                                 {
-                                    Text = from
-                                },
-                                new AdaptiveText()
-                                {
-                                    Text = subject,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    Text = from,
+                                    HintMaxLines = 2,
+                                    HintWrap = true,
                                 },
                                 new AdaptiveText()
                                 {
                                     Text = body,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintMaxLines = 2,
+                                    HintWrap = true,
                                 }
                             }
                         }
@@ -57,17 +55,17 @@ namespace ITHome.Services
                                 new AdaptiveText()
                                 {
                                     Text = from,
-                                    HintStyle = AdaptiveTextStyle.Subtitle
-                                },
-                                new AdaptiveText()
-                                {
-                                    Text = subject,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    HintStyle = AdaptiveTextStyle.Base,
+                                    HintMaxLines = 2,
+                                    HintWrap = true,
                                 },
                                 new AdaptiveText()
                                 {
                                     Text = body,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                                    HintMaxLines = 2,
+                                    HintWrap = true,
+
                                 }
                             }
                         }

@@ -21,6 +21,7 @@ namespace ITHome.Core.Models
         public int Id { get; set; }
         public string Url { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public string Image { get; set; }
         public int CommentCount { get; set; }
         public DateTime PostDate { get; set; }
@@ -32,6 +33,7 @@ namespace ITHome.Core.Models
                 Id = token.Value<int>("newsid"),
                 Url = token.Value<string>("url"),
                 Title = token.Value<string>("title"),
+                Description = token.Value<string>("description"),
                 Image = token.Value<string>("image"),
                 CommentCount = token.Value<int>("commentcount"),
                 PostDate = token.Value<DateTime>("postdate"),
