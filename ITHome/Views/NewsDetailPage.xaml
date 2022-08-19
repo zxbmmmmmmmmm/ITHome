@@ -16,9 +16,14 @@
         <Grid Margin="0,0,0,48">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <StackPanel Grid.Row="2" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" Visibility="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource NullToVisibilityInversionConverter}}">
+                <FontIcon Glyph="&#xF57E;" FontSize="80" Foreground="{StaticResource SystemAccentColorDark2}"/>
+                <TextBlock Text="点击左侧列表以查看" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
+            </StackPanel>
+           
             <StackPanel Margin="32,32,32,0" Spacing="4">
                 <TextBlock Text="{x:Bind NewsSearch.Title,Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
                 <StackPanel Orientation="Horizontal">

@@ -50,7 +50,7 @@
         </Border>
         <winui:NavigationView
             x:Name="navigationView"
-            IsBackButtonVisible="Visible"
+            IsBackButtonVisible="Auto"
             IsBackEnabled="{x:Bind IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind Selected, Mode=OneWay}"
             ItemInvoked="OnItemInvoked"
