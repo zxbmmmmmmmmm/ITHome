@@ -108,6 +108,11 @@
                             <controls1:CommentTemplate Comment="{x:Bind Mode=OneWay}" Margin="{StaticResource SmallTopBottomMargin}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <Grid>
+                            <Button x:Name="LoadMoreButton" Click="LoadMoreButton_Click" Content="加载更多" HorizontalAlignment="Stretch" FontSize="17" Margin="{StaticResource SmallLeftRightMargin}" MaxWidth="512"/>
+                        </Grid>
+                    </ListView.Footer>
                 </ListView>
             </StackPanel>
 

@@ -98,10 +98,15 @@ namespace ITHome.Helpers
             return jObj;
 
         }
-        public async static Task<CommentsList> GetCommentsList(string newsId)
+        public async static Task<CommentsList> GetCommentsList(int newsId, int cid)
         {
-            var sn = GetCommentSn(newsId);
-            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getnewscomment?sn={sn}", Common.Settings.UserHash);
+            var sn = GetCommentSn(newsId.ToString());
+            string link;
+            if (cid == 0)
+                link = $"https://cmt.ithome.com/apiv2/comment/getnewscomment?sn={sn}";
+            else
+                link = $"https://cmt.ithome.com/apiv2/comment/getnewscomment?sn={sn}&cid={cid}";
+            var jObj = await NetworkHelper.GetAsync(link, Common.Settings.UserHash);
             var commentsList = CommentsList.CreateFromJson(jObj);
             return commentsList;
         }

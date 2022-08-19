@@ -39,6 +39,7 @@ namespace ITHome.Core.Models
         public CommentElements CommentElements { get; set; }
         public User User { get; set; }
         public int NewsId { get; set; }
+        public string Floor { get; set; }
 
         public static Comment CreateFromJson(JToken token)
         {
@@ -50,9 +51,10 @@ namespace ITHome.Core.Models
                 ExpandCount = token.Value<int>("expandCount"),
                 City = token.Value<string>("city"),
                 Tail = token.Value<string>("tail"),
+                Floor = token.Value<string>("floorStr"),
                 PostTime = token.Value<DateTime>("postTime"),
                 CommentElements = CommentElements.CreateFromJson(token.Value<JToken>("elements")),
-                User = User.CreateFromJson(token.Value<JToken>("userInfo"))
+                User = User.CreateFromJson(token.Value<JToken>("userInfo")),
             };
             if (token["newsId"] != null)
                 comment.NewsId = token.Value<int>("newsId");

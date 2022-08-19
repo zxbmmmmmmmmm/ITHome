@@ -4,6 +4,7 @@ using ITHome.Helpers;
 using ITHome.Views.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml;
@@ -28,6 +29,7 @@ namespace ITHome.Views
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<bool> OnPageCanGoBackChanged;
+        public ObservableCollection<Comment> Comments = new ObservableCollection<Comment>();
         public NewsGrade NewsGrade
         {
             get => _newsGrade;
@@ -90,6 +92,7 @@ namespace ITHome.Views
         }
         public async void GetNewsSearch()
         {
+            Comments.Clear();
             NewsGradeUp.IsChecked = false;
             NewsGradeDown.IsChecked = false;
             NewsGrade = new NewsGrade { GradeStr = "未知", Grade =0 };
@@ -112,7 +115,7 @@ namespace ITHome.Views
                 id = split[length - 2] + split[length - 1].Replace(".htm", "");
             }
             NewsSearch = await ITHomeProxy.GetNewsSearch(id);
-            GetComments();
+            GetComments(0);
             GetRelatedNews();
         }
         public async void GetRelatedNews()
@@ -120,9 +123,10 @@ namespace ITHome.Views
             RelatedNews = await ITHomeProxy.GetRelatedNews(NewsSearch.Id.ToString());
             RelatedNewsListView.ItemsSource = RelatedNews.NewsItem;
         }
-        public async void GetComments()
+        public async void GetComments(int cid)
         {
-            var comments = await ITHomeProxy.GetCommentsList(NewsSearch.Id.ToString());
+            
+            var comments = await ITHomeProxy.GetCommentsList(NewsSearch.Id, cid);
             if (comments.Comments.Count > 0)
                 CommentsHeader.Visibility = Visibility.Visible;
             else            
@@ -133,7 +137,12 @@ namespace ITHome.Views
             else
                 HotCommentsHeader.Visibility = Visibility.Collapsed;
             HotCommentsListView.ItemsSource = comments.HotComments;
-            CommentsListView.ItemsSource = comments.Comments;
+            foreach (var comment in comments.Comments)
+                Comments.Add(comment);
+            if (Comments[Comments.Count - 1].Floor == "1楼"||comments.Comments.Count == 0)
+                LoadMoreButton.Visibility = Visibility.Collapsed;
+
+            CommentsListView.ItemsSource = Comments;
         }
 
         private void RelatedNewsListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -215,6 +224,11 @@ namespace ITHome.Views
             }
             new Toast(jObj["message"].ToString(),TimeSpan.FromSeconds(3)).Show();
             SubmitCommentBtn.IsEnabled = true;
+        }
+
+        private void LoadMoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            GetComments(Comments[Comments.Count - 1].Id);
         }
     }
 }

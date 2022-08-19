@@ -24,15 +24,14 @@
                     <HyperlinkButton Margin="0,-2,0,0"  Padding="0" VerticalAlignment="Center">
                         <TextBlock Text="{x:Bind Comment.Tail}" FontSize="13"/>
                     </HyperlinkButton>
-
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="4">
                     <TextBlock Text="{x:Bind Comment.City}" Style="{StaticResource DetailBodyBaseMediumStyle}" FontSize="12"/>
                     <TextBlock Text="{x:Bind Comment.PostTime,Converter={StaticResource DateConverter}}" Style="{StaticResource DetailBodyBaseMediumStyle}" FontSize="12"/>
-
                 </StackPanel>
             </StackPanel>
         </StackPanel>
+        <TextBlock Text="{x:Bind Comment.Floor}" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
         <TextBlock Text="{x:Bind Comment.CommentElements.Content}" TextWrapping="Wrap" Grid.Row="1" Margin="40,12,0,12" FontSize="16" IsTextSelectionEnabled="True" />
         <Button x:Name="ExpandButton"
                 Click="ExpandButton_Click"
@@ -48,13 +47,13 @@
             </StackPanel>
         </Button>
         <StackPanel Orientation="Horizontal" Spacing="8" Grid.Row="2" HorizontalAlignment="Right">
-            <ToggleButton x:Name="UpvoteBtn" Click="UpvoteBtn_Click" Background="Transparent" BorderBrush="Transparent">
+            <ToggleButton x:Name="UpvoteBtn" Click="UpvoteBtn_Click" Background="Transparent" BorderBrush="Transparent" IsChecked="False">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon Glyph="&#xE74A;" FontSize="14"/>
                     <TextBlock x:Name="UpvoteTextBlock" Text="{x:Bind Comment.Support,Mode=OneWay}"/>
                 </StackPanel>
             </ToggleButton>
-            <ToggleButton x:Name="DownvoteBtn" Click="DownvoteBtn_Click" Background="Transparent" BorderBrush="Transparent">
+            <ToggleButton x:Name="DownvoteBtn" Click="DownvoteBtn_Click" Background="Transparent" BorderBrush="Transparent" IsChecked="False">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon Glyph="&#xE74B;" FontSize="14"/>
                     <TextBlock x:Name="DownvoteTextBlock" Text="{x:Bind Comment.Against,Mode=OneWay}"/>
