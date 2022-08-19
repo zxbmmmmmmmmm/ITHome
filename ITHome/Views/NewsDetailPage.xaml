@@ -79,7 +79,7 @@
                          PlaceholderText="发布评论"
                          TextWrapping="Wrap" />
                     <Grid>
-                        <TextBlock Text="{x:Bind helpers:Common.Settings.LoggedUser.NickName,Mode=OneWay}" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{x:Bind helpers:Common.Settings.LoggedUser.NickName,Mode=OneWay}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button x:Name="SubmitCommentBtn" Content="发布" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" Click="SubmitCommentBtn_Click"/>
                         </StackPanel>

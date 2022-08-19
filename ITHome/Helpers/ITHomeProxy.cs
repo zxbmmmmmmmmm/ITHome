@@ -87,6 +87,17 @@ namespace ITHome.Helpers
             else
                 return new NewsGrade { Message = jObj["message"].ToString() };
         }
+        public async static Task<JObject> Vote(int id, int type)
+        {
+            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/api/comment/vote?commentId={id}&typeId={type}&userhash={Common.Settings.UserHash}", Common.Settings.UserHash);
+            return jObj;
+        }
+        public async static Task<JObject> CancelVote(int id,int type)
+        {
+            var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/api/comment/cancelvote?commentId={id}&typeId={type}&userhash={Common.Settings.UserHash}", Common.Settings.UserHash);
+            return jObj;
+
+        }
         public async static Task<CommentsList> GetCommentsList(string newsId)
         {
             var sn = GetCommentSn(newsId);
@@ -118,22 +129,8 @@ namespace ITHome.Helpers
 
             return hex;
         }
-        public async static Task<JObject> SubmitCommentAsync(string text,int newsId,string device = "",int client = 7)
+        public async static Task<JObject> SubmitCommentAsync(CommentClient obj)
         {
-            var obj = new CommentClient
-            {
-                device = device,
-                newsId = newsId,
-                client = client,
-                elements = new List<CommentClientElement>()
-            };
-            var element = new CommentClientElement
-            {
-                content = text,
-            };
-
-            obj.elements.Add(element);
-
             var json = JsonConvert.SerializeObject(obj, Formatting.None);
             var data = await NetworkHelper.PostWithJsonAsync("https://cmt.ithome.com/apiv2/comment/submit?appver=821&platform=uwp", json, Common.Settings.UserHash);
             return data;

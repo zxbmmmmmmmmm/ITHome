@@ -14,6 +14,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="12">
             <PersonPicture ProfilePicture="{x:Bind Comment.User.Avatar,Mode=OneWay}" Height="30"/>
@@ -44,26 +45,31 @@
                 <TextBlock Text="展开("/>
                 <TextBlock Text="{x:Bind Comment.ExpandCount}"/>
                 <TextBlock Text=")"/>
-
             </StackPanel>
-
         </Button>
         <StackPanel Orientation="Horizontal" Spacing="8" Grid.Row="2" HorizontalAlignment="Right">
-            <Button Background="Transparent" BorderBrush="Transparent">
+            <ToggleButton x:Name="UpvoteBtn" Click="UpvoteBtn_Click" Background="Transparent" BorderBrush="Transparent">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon Glyph="&#xE74A;" FontSize="14"/>
-                    <TextBlock Text="{x:Bind Comment.Support}"/>
+                    <TextBlock x:Name="UpvoteTextBlock" Text="{x:Bind Comment.Support,Mode=OneWay}"/>
                 </StackPanel>
-            </Button>
-            <Button Background="Transparent" BorderBrush="Transparent">
+            </ToggleButton>
+            <ToggleButton x:Name="DownvoteBtn" Click="DownvoteBtn_Click" Background="Transparent" BorderBrush="Transparent">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon Glyph="&#xE74B;" FontSize="14"/>
-                    <TextBlock Text="{x:Bind Comment.Against}"/>
+                    <TextBlock x:Name="DownvoteTextBlock" Text="{x:Bind Comment.Against,Mode=OneWay}"/>
                 </StackPanel>
-            </Button>
+            </ToggleButton>
+            <Button x:Name="ReplyBtn" Click="ReplyBtn_Click" Content="回复" Background="Transparent" BorderBrush="Transparent"/>
         </StackPanel>
-
+        <Grid x:Name="ReplyGrid" Grid.Row="3" Margin="{StaticResource SmallTopMargin}" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox  x:Name="CommentEdit" PlaceholderText="输入回复内容..." AcceptsReturn="True"/>
+            <Button x:Name="SubmitReplyBtn" Click="SubmitReplyBtn_Click" Content="发布" Grid.Column="1" Style="{StaticResource AccentButtonStyle}" Margin="{StaticResource XSmallLeftMargin}" VerticalAlignment="Top"/>
+        </Grid>
         <Grid Width="2048"/>
-
     </Grid>
 </UserControl>

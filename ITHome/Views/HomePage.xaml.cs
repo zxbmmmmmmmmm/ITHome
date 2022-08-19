@@ -208,5 +208,12 @@ namespace ITHome.Views
             }
             //RightFrame.GoBack();
         }
+
+        private void TopNavView_ItemInvoked(WinUI.NavigationView sender, WinUI.NavigationViewItemInvokedEventArgs args)
+        {
+            NewsList.Clear();
+            GetNewsList();
+
+        }
     }
 }

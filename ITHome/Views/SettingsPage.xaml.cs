@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using ITHome.Helpers;
 using ITHome.Services;
+using ITHome.Views.Controls;
 using ITHome.Views.Dialogs;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
@@ -89,6 +90,7 @@ namespace ITHome.Views
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             await new LoginDialog().ShowAsync();
+
         }
     }
 }

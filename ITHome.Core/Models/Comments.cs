@@ -38,6 +38,8 @@ namespace ITHome.Core.Models
         public ObservableCollection<Comment> Children { get; set; }
         public CommentElements CommentElements { get; set; }
         public User User { get; set; }
+        public int NewsId { get; set; }
+
         public static Comment CreateFromJson(JToken token)
         {
             var comment = new Comment
@@ -52,6 +54,8 @@ namespace ITHome.Core.Models
                 CommentElements = CommentElements.CreateFromJson(token.Value<JToken>("elements")),
                 User = User.CreateFromJson(token.Value<JToken>("userInfo"))
             };
+            if (token["newsId"] != null)
+                comment.NewsId = token.Value<int>("newsId");
             if (token["children"] != null)
             {
                 comment.Children = new ObservableCollection<Comment>();

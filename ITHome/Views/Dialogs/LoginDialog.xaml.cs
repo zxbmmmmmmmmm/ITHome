@@ -1,4 +1,5 @@
 ﻿using ITHome.Helpers;
+using ITHome.Views.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,7 @@ namespace ITHome.Views.Dialogs
                 if (name == "user")
                 {
                     Common.Settings.UserHash = cookieList[i].Value.Replace("hash=","");
+                    new Toast("已登录").Show();
                     Hide();
                     return;
                 }

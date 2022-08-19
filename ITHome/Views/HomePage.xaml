@@ -57,9 +57,22 @@
                         <ListView.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
+                                <winui:NavigationView x:Name="TopNavView" ItemInvoked="TopNavView_ItemInvoked" PaneDisplayMode="Top" IsSettingsVisible="False" IsBackButtonVisible="Collapsed">
+                                    <winui:NavigationView.MenuItems>
+                                        <winui:NavigationViewItem Content="最新" IsSelected="True"/>
+                                        <winui:NavigationViewItem Content="排行榜" IsEnabled="False"/>
+                                        <winui:NavigationViewItem Content="Windows" IsEnabled="False"/>
+                                        <winui:NavigationViewItem Content="热评" IsEnabled="False"/>
+
+                                    </winui:NavigationView.MenuItems>
+                                    <winui:NavigationView.FooterMenuItems>
+                                        <winui:NavigationViewItem x:Name="RefreshItem" Icon="Refresh" SelectsOnInvoked="False"/>
+
+                                    </winui:NavigationView.FooterMenuItems>
+                                </winui:NavigationView>
                                 <FlipView x:Name="SlideFlipView" Height="181" Margin="0" Padding="0" ItemsSource="{x:Bind NewsSlides}" SelectionChanged="SlideListView_SelectionChanged" PointerEntered="SlideListView_PointerEntered" PointerExited="SlideListView_PointerExited" winui:BackdropMaterial.ApplyToRootOrPageBackground="True" Grid.Row="1">
                                     <FlipView.ItemTemplate>
                                         <DataTemplate x:DataType="models:NewsSlide">

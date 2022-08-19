@@ -1,8 +1,11 @@
 ﻿using ITHome.Core.Models;
+using ITHome.Core.Models.Post;
 using ITHome.Helpers;
 using ITHome.Views.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -190,7 +193,22 @@ namespace ITHome.Views
         private  async void SubmitCommentBtn_Click(object sender, RoutedEventArgs e)
         {
             SubmitCommentBtn.IsEnabled = false;
-            var jObj = await ITHomeProxy.SubmitCommentAsync(CommentEdit.Text.ToString(),Item.Id);
+
+            var comment = new CommentClient
+            {
+                device = "",
+                newsId = Item.Id,
+                client = 7,
+                elements = new List<CommentClientElement>()
+            };
+            var element = new CommentClientElement
+            {
+                content = CommentEdit.Text.ToString(),
+            };
+            comment.elements.Add(element);
+            var jObj = await ITHomeProxy.SubmitCommentAsync(comment);
+
+
             if ((bool)jObj["success"] == true)
             {
                 CommentEdit.Text = "";
