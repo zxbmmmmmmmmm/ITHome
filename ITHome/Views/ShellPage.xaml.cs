@@ -59,7 +59,6 @@ namespace ITHome.Views
             var appTitleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
             appTitleBar.ButtonBackgroundColor = Colors.Transparent;
             appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
             Window.Current.SetTitleBar(AppTitleBar);
         }
 
@@ -69,9 +68,13 @@ namespace ITHome.Views
             // More info on tracking issue https://github.com/Microsoft/microsoft-ui-xaml/issues/8
             KeyboardAccelerators.Add(_altLeftKeyboardAccelerator);
             KeyboardAccelerators.Add(_backKeyboardAccelerator);
+            GetUser();
             await Task.CompletedTask;
         }
-
+        public async void GetUser()
+        {
+            await ITHomeProxy.GetUser();
+        }
         private void Frame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw e.Exception;

@@ -179,6 +179,9 @@
     <Compile Include="Views\Controls\NewsControl.xaml.cs">
       <DependentUpon>NewsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\Toast.xaml.cs">
+      <DependentUpon>Toast.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\CommentContentDialog.xaml.cs">
       <DependentUpon>CommentContentDialog.xaml</DependentUpon>
     </Compile>
@@ -247,6 +250,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\NewsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Toast.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

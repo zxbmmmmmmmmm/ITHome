@@ -51,7 +51,7 @@ namespace ITHome.Views.Dialogs
                 Debug.WriteLine(name + ":" + cookieList[i].Value);
                 if (name == "user")
                 {
-                    Common.Settings.UserHash = cookieList[i].Value;
+                    Common.Settings.UserHash = cookieList[i].Value.Replace("hash=","");
                     Hide();
                     return;
                 }

@@ -1,9 +1,11 @@
 ﻿using ITHome.Core.Models;
 using ITHome.Helpers;
+using ITHome.Views.Controls;
 using System;
 using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -23,6 +25,19 @@ namespace ITHome.Views
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<bool> OnPageCanGoBackChanged;
+        public NewsGrade NewsGrade
+        {
+            get => _newsGrade;
+            set
+            {
+                if (_newsGrade != value)
+                {
+                    _newsGrade = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NewsGrade)));
+                }
+            }
+        }
+        private NewsGrade _newsGrade = new NewsGrade { GradeStr = "未知",Grade=0};
         public void GoBack()
         {
              OnPageCanGoBackChanged?.Invoke(this, false);          
@@ -72,7 +87,9 @@ namespace ITHome.Views
         }
         public async void GetNewsSearch()
         {
-
+            NewsGradeUp.IsChecked = false;
+            NewsGradeDown.IsChecked = false;
+            NewsGrade = new NewsGrade { GradeStr = "未知", Grade =0 };
             MainScrollViewer.ChangeView(MainScrollViewer.HorizontalOffset, 0, MainScrollViewer.ZoomFactor);
             if (Item != null)
             {
@@ -123,6 +140,63 @@ namespace ITHome.Views
             NewsUrl = item.Url;
             //(Parent as Frame).Navigate(typeof(NewsDetailPage),item);
             //OnPageCanGoBackChanged?.Invoke(this, true);
+        }
+
+        private async void NewsGradeDown_Click(object sender, RoutedEventArgs e)
+        {
+            if((bool)NewsGradeUp.IsChecked)
+            {
+                NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());
+                NewsGradeUp.IsChecked = false;
+            }
+
+            if ((bool)NewsGradeDown.IsChecked)
+            {
+                NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "0");
+                if(NewsGrade.Message != null)//出错(可能已经打过分)
+                {
+                    NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());//关闭原来的打分
+                    NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "0");//重新打分
+                }
+            }
+            else
+                NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());
+            
+
+
+        }
+
+        private async void NewsGradeUp_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)NewsGradeDown.IsChecked)
+            {
+                NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());
+                NewsGradeDown.IsChecked = false;
+            }
+            if ((bool)NewsGradeUp.IsChecked)
+            {
+                NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "2");
+                if (NewsGrade.Message != null)//出错(可能已经打过分)
+                {
+                    NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());//关闭原来的打分
+                    NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "2");//重新打分
+                }
+            }
+            else
+                NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());
+
+        }
+
+        private  async void SubmitCommentBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SubmitCommentBtn.IsEnabled = false;
+            var jObj = await ITHomeProxy.SubmitCommentAsync(CommentEdit.Text.ToString(),Item.Id);
+            if ((bool)jObj["success"] == true)
+            {
+                CommentEdit.Text = "";
+            }
+            new Toast(jObj["message"].ToString(),TimeSpan.FromSeconds(3)).Show();
+            SubmitCommentBtn.IsEnabled = true;
         }
     }
 }

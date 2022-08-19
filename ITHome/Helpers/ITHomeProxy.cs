@@ -1,5 +1,8 @@
 ﻿using ITHome.Core.Helpers;
 using ITHome.Core.Models;
+using ITHome.Core.Models.Post;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +16,20 @@ namespace ITHome.Helpers
 {
     public class ITHomeProxy
     {
+        public async static Task<UserInfo> GetUser()
+        {
+            var jObj = await NetworkHelper.GetAsync($"https://my.ruanmei.com/api/User/Get?userHash={Common.Settings.UserHash}&extra=ithome_uwp&appver=1", Common.Settings.UserHash);
+            if ((int)jObj["ok"]==1)
+            {
+                Common.Settings.LoggedUser = UserInfo.CreateFromJson(jObj["userinfo"]);
+                return UserInfo.CreateFromJson(jObj["userinfo"]);
+            }
+            else
+            {
+                Common.Settings.LoggedUser = UserInfo.NotLoggedUser();
+                return UserInfo.NotLoggedUser();
+            }
+        }
         public async static Task<NewsList> GetNewsList(string ot)
         {
             var jObj = await NetworkHelper.GetAsync($"https://m.ithome.com/api/news/newslistpageget?page=0&ot={ot}", null);
@@ -49,8 +66,26 @@ namespace ITHome.Helpers
         public async static Task<NewsList> GetRelatedNews(string id)
         {
             var jObj = await NetworkHelper.GetAsync($"https://napi.ithome.com/api/news/getrelatednews?newsid={id}", Common.Settings.UserHash);
+            //var jObj_ = await NetworkHelper.GetAsync($"https://napi.ithome.com/api/newsgrade/createnewsgrade?newsId={id}&grade=2", Common.Settings.UserHash);
+
             var newsList = NewsList.CreateFromJson(jObj["data"]["relatedNewsResponseModels"]);
             return newsList;
+        }
+        public async static Task<NewsGrade> GetNewsGrade(string id, string grade)
+        {
+            var jObj = await NetworkHelper.GetAsync($"https://napi.ithome.com/api/newsgrade/createnewsgrade?newsId={id}&grade={grade}", Common.Settings.UserHash);
+            if (jObj["data"].HasValues)
+                return NewsGrade.CreateFromJson(jObj["data"]);
+            else
+                return new NewsGrade { Message = jObj["errorMessage"].ToString() };
+        }
+        public async static Task<NewsGrade> CancelGrade(string id)
+        {
+            var jObj = await NetworkHelper.GetAsync($"https://napi.ithome.com/api/newsgrade/cancelnewsgrade?newsId={id}", Common.Settings.UserHash);
+            if (jObj["data"].HasValues)
+                return NewsGrade.CreateFromJson(jObj["data"]);
+            else
+                return new NewsGrade { Message = jObj["message"].ToString() };
         }
         public async static Task<CommentsList> GetCommentsList(string newsId)
         {
@@ -63,6 +98,7 @@ namespace ITHome.Helpers
         {
             var id = GetCommentContentId(commentId);
             var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/apiv2/comment/getcommentcontent?commentid={id}", Common.Settings.UserHash);
+
             var content = Comment.CreateFromJson(jObj["content"]["comment"]);
             return content;
         }
@@ -81,6 +117,26 @@ namespace ITHome.Helpers
             var hex = BitConverter.ToString(encrypted, 0).Replace("-", string.Empty).ToLower();
 
             return hex;
+        }
+        public async static Task<JObject> SubmitCommentAsync(string text,int newsId,string device = "",int client = 7)
+        {
+            var obj = new CommentClient
+            {
+                device = device,
+                newsId = newsId,
+                client = client,
+                elements = new List<CommentClientElement>()
+            };
+            var element = new CommentClientElement
+            {
+                content = text,
+            };
+
+            obj.elements.Add(element);
+
+            var json = JsonConvert.SerializeObject(obj, Formatting.None);
+            var data = await NetworkHelper.PostWithJsonAsync("https://cmt.ithome.com/apiv2/comment/submit?appver=821&platform=uwp", json, Common.Settings.UserHash);
+            return data;
         }
         public static string GetCommentSn(string id)
         {

@@ -66,7 +66,6 @@ namespace ITHome.Core.Models
         public string Author { get; set; }
         public string Editer { get; set; }
         public DateTime? PostDate { get; set; }
-
         public List<NewsTag> Tags { get; set; }
         public static NewsSearch CreateFromJson(JToken token)
         {
@@ -104,5 +103,30 @@ namespace ITHome.Core.Models
             return newstag;
         }
     }
-    
+    public class NewsGrade
+    {
+        public string Message { get; set; }
+        public int MyGrade { get; set; }
+        public  int Grade { get; set; }
+        public string GradeStr { get; set; }
+        public int GradeCount { get; set; }
+        public int WorthLessCount { get; set; }
+        public int AcceptableCount { get; set; }
+        public int ValuableCount { get; set; }
+
+        public static NewsGrade CreateFromJson(JToken token)
+        {
+            var grade = new NewsGrade
+            {
+                MyGrade = token.Value<int>("myGrade"),
+                Grade = token.Value<int>("grade"),
+                GradeStr = token.Value<string>("gradeStr"),
+                WorthLessCount = token.Value<int>("worthLessCount"),
+                AcceptableCount = token.Value<int>("acceptableCount"),
+                ValuableCount = token.Value<int>("valuableCount"),
+                GradeCount = token.Value<int>("gradeCount"),
+            };
+            return grade;
+        }
+    }
 }

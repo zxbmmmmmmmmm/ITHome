@@ -1,4 +1,5 @@
 ﻿using ITHome.Core.Helpers;
+using ITHome.Core.Models;
 using Newtonsoft.Json;
 using ReverseMarkdown;
 using System;
@@ -22,8 +23,7 @@ namespace ITHome.Helpers
     public class Settings : INotifyPropertyChanged
     {
         /// <summary>
-        /// 论坛网址
-        /// 默认论坛请到Config.cs内更改
+        /// 用于身份验证
         /// </summary>
         public string UserHash
         {
@@ -35,7 +35,15 @@ namespace ITHome.Helpers
             }
         }
 
-
+        public UserInfo LoggedUser
+        {
+            get => GetSettingsWithClass("LoggedUser", UserInfo.NotLoggedUser());
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["LoggedUser"] = JsonHelper.GetJsonByObject(value);
+                OnPropertyChanged();
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public async void OnPropertyChanged([CallerMemberName] string propertyName = "")
