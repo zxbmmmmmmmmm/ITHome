@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
+using ITHome.Core.Models;
 using ITHome.Helpers;
 using ITHome.Services;
 using ITHome.Views.Controls;
@@ -87,10 +87,18 @@ namespace ITHome.Views
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+
+
+        private async void LogoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Common.Settings.UserHash = "";
+            Common.Settings.LoggedUser = UserInfo.NotLoggedUser();
+            await new LoginDialog(true).ShowAsync();
+        }
+
+        private async void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
             await new LoginDialog().ShowAsync();
-
         }
     }
 }

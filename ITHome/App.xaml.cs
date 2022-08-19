@@ -1,7 +1,7 @@
 ﻿using System;
 
 using ITHome.Services;
-
+using ITHome.Views.Controls;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 
@@ -41,6 +41,7 @@ namespace ITHome
         private void OnAppUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
+            new Toast(e.Message).Show();
             // TODO: Please log and handle the exception as appropriate to your scenario
             // For more info see https://docs.microsoft.com/uwp/api/windows.ui.xaml.application.unhandledexception
         }

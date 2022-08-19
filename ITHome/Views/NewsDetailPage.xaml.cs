@@ -115,6 +115,7 @@ namespace ITHome.Views
                 id = split[length - 2] + split[length - 1].Replace(".htm", "");
             }
             NewsSearch = await ITHomeProxy.GetNewsSearch(id);
+
             GetComments(0);
             GetRelatedNews();
         }
@@ -139,7 +140,11 @@ namespace ITHome.Views
             HotCommentsListView.ItemsSource = comments.HotComments;
             foreach (var comment in comments.Comments)
                 Comments.Add(comment);
-            if (Comments[Comments.Count - 1].Floor == "1楼"||comments.Comments.Count == 0)
+            if (comments.Comments.Count == 0)
+            {
+                LoadMoreButton.Visibility = Visibility.Collapsed;
+            }
+            else if(Comments[Comments.Count - 1].Floor == "1楼")
                 LoadMoreButton.Visibility = Visibility.Collapsed;
 
             CommentsListView.ItemsSource = Comments;
@@ -158,7 +163,7 @@ namespace ITHome.Views
         {
             if((bool)NewsGradeUp.IsChecked)
             {
-                NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());
+                NewsGrade = await ITHomeProxy.CancelGrade(NewsSearch.Id.ToString());
                 NewsGradeUp.IsChecked = false;
             }
 
@@ -167,8 +172,8 @@ namespace ITHome.Views
                 NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "0");
                 if(NewsGrade.Message != null)//出错(可能已经打过分)
                 {
-                    NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());//关闭原来的打分
-                    NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "0");//重新打分
+                    NewsGrade = await ITHomeProxy.CancelGrade(NewsSearch.Id.ToString());//关闭原来的打分
+                    NewsGrade = await ITHomeProxy.GetNewsGrade(NewsSearch.Id.ToString(), "0");//重新打分
                 }
             }
             else
@@ -182,20 +187,20 @@ namespace ITHome.Views
         {
             if ((bool)NewsGradeDown.IsChecked)
             {
-                NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());
+                NewsGrade = await ITHomeProxy.CancelGrade(NewsSearch.Id.ToString());
                 NewsGradeDown.IsChecked = false;
             }
             if ((bool)NewsGradeUp.IsChecked)
             {
-                NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "2");
+                NewsGrade = await ITHomeProxy.GetNewsGrade(NewsSearch.Id.ToString(), "2");
                 if (NewsGrade.Message != null)//出错(可能已经打过分)
                 {
-                    NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());//关闭原来的打分
-                    NewsGrade = await ITHomeProxy.GetNewsGrade(Item.Id.ToString(), "2");//重新打分
+                    NewsGrade = await ITHomeProxy.CancelGrade(NewsSearch.Id.ToString());//关闭原来的打分
+                    NewsGrade = await ITHomeProxy.GetNewsGrade(NewsSearch.Id.ToString(), "2");//重新打分
                 }
             }
             else
-                NewsGrade = await ITHomeProxy.CancelGrade(Item.Id.ToString());
+                NewsGrade = await ITHomeProxy.CancelGrade(NewsSearch.Id.ToString());
 
         }
 

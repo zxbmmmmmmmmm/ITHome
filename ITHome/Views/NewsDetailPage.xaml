@@ -31,13 +31,13 @@
             <RichTextBlock html:HtmlProperties.Html="{x:Bind NewsSearch.Detail,Mode=OneWay}" Grid.Row="1" FontSize="16" VerticalAlignment="Top" Margin="32,0" />
             <controls:MarkdownTextBlock Text="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource HtmlToMarkdownConverter}}" Grid.Row="1" VerticalAlignment="Top" Margin="32,0" FontSize="16" muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Visibility="Collapsed"/>
 
-            <StackPanel Grid.Row="2" Margin="24,12">
+            <StackPanel Grid.Row="2" Margin="24,12" Visibility="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
                 <StackPanel HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}" >
                         <muxc:RatingControl IsReadOnly="True" Visibility="Visible" Value="{x:Bind NewsGrade.Grade,Mode=OneWay}"/>
                         <TextBlock Text="{x:Bind NewsGrade.GradeStr,Mode=OneWay}" Margin="0,4,0,0" FontSize="15"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind helpers:Common.Settings.LoggedUser.Mobile,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
                         <ToggleButton x:Name="NewsGradeUp" Click="NewsGradeUp_Click">
 
                             <StackPanel Orientation="Horizontal">
@@ -71,7 +71,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <StackPanel Margin="{StaticResource SmallTopMargin}" Spacing="8">
+                <StackPanel Margin="{StaticResource SmallTopMargin}" Spacing="8" Visibility="{x:Bind helpers:Common.Settings.LoggedUser.Mobile,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
                     <TextBox x:Name="CommentEdit"                      
                          Height="64"
                          Grid.Column="0"

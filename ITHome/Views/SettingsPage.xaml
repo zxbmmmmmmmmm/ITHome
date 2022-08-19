@@ -7,63 +7,114 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Style="{StaticResource PageStyle}"
     xmlns:xaml="using:Windows.UI.Xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <helper:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="ElementTheme" />
     </Page.Resources>
-    <Grid Margin="{StaticResource MediumLeftRightMargin}">
+    <Grid Margin="{StaticResource MediumLeftTopRightBottomMargin}">
         <StackPanel
             x:Name="ContentArea">
-            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <TextBlock x:Uid="Settings_Theme" />
+            <TextBlock Text="用户" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="{StaticResource SmallTopMargin}"/>
+            <Button x:Name="LoginBtn" Content="登录" Click="LoginBtn_Click" Margin="{StaticResource SmallTopMargin}" Visibility="{x:Bind helper:Common.Settings.LoggedUser.Mobile,Converter={StaticResource NullToVisibilityInversionConverter},Mode=OneWay}"/>
+            <muxc:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="{StaticResource SmallTopMargin}" Visibility="{x:Bind helper:Common.Settings.LoggedUser.Mobile,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}">
+                <muxc:Expander.Header>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <FontIcon Glyph="&#xE13D;" />
+                            <TextBlock Text="当前用户" Margin="{StaticResource SmallLeftMargin}"/>
+                        </StackPanel>
+                        <TextBlock Text="{x:Bind helper:Common.Settings.LoggedUser.NickName,Mode=OneWay}" HorizontalAlignment="Right"/>
+                    </Grid>
+                </muxc:Expander.Header>
+                <muxc:Expander.Content>
+                    <Grid RowSpacing="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="邮箱" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Bind helper:Common.Settings.LoggedUser.UserName}" Style="{StaticResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Right"/>
+                        <TextBlock Text="手机" VerticalAlignment="Center" Grid.Row="1"/>
+                        <TextBlock Text="{x:Bind helper:Common.Settings.LoggedUser.Mobile}" Style="{StaticResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Right" Grid.Row="1"/>
+                        <Button x:Name="LogoutBtn" Click="LogoutBtn_Click" Content="退出登录" Grid.Row="2"/>
+                    </Grid>
+                </muxc:Expander.Content>
+            </muxc:Expander>
+            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="{StaticResource SmallTopMargin}"/>
+            <muxc:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
+                <muxc:Expander.Header>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <FontIcon Glyph="&#xE793;" />
+                        <TextBlock x:Uid="Settings_Theme" Margin="{StaticResource SmallLeftMargin}"/>
+                    </StackPanel>
+                </muxc:Expander.Header>
+                <muxc:Expander.Content>
+                    <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+                        <StackPanel Spacing="4">
+                            <RadioButton
+                                    x:Uid="Settings_Theme_Light"
+                                    Checked="ThemeChanged_CheckedAsync"
+                                    IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
+                                    FontSize="15"
+                                    GroupName="AppTheme">
+                                <RadioButton.CommandParameter>
+                                    <xaml:ElementTheme>Light</xaml:ElementTheme>
+                                </RadioButton.CommandParameter>
+                            </RadioButton>
+                            <RadioButton
+                                    x:Uid="Settings_Theme_Dark"
+                                    Checked="ThemeChanged_CheckedAsync"
+                                    IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
+                                    FontSize="15"
+                                    GroupName="AppTheme">
+                                <RadioButton.CommandParameter>
+                                    <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                                </RadioButton.CommandParameter>
+                            </RadioButton>
+                            <RadioButton
+                                    x:Uid="Settings_Theme_Default"
+                                    Checked="ThemeChanged_CheckedAsync"
+                                    IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
+                                    FontSize="15"
+                                     GroupName="AppTheme">
+                                <RadioButton.CommandParameter>
+                                    <xaml:ElementTheme>Default</xaml:ElementTheme>
+                                </RadioButton.CommandParameter>
+                            </RadioButton>
+                        </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton 
-                        x:Uid="Settings_Theme_Light"
-                        Checked="ThemeChanged_CheckedAsync" 
-                        IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme" >
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Light</xaml:ElementTheme>
-                        </RadioButton.CommandParameter> 
-                    </RadioButton>
-                    <RadioButton 
-                        x:Uid="Settings_Theme_Dark"
-                        Checked="ThemeChanged_CheckedAsync" 
-                        IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton 
-                        x:Uid="Settings_Theme_Default"
-                        Checked="ThemeChanged_CheckedAsync"
-                        IsChecked="{x:Bind ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Default</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                </StackPanel>
-            </StackPanel>
+                </muxc:Expander.Content>
+            </muxc:Expander>
+            <TextBlock Text="关于" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="{StaticResource SmallTopMargin}"/>
+            <muxc:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
+                <muxc:Expander.Header>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <FontIcon Glyph="&#xE946;" />
+                        <TextBlock Text="关于" Margin="{StaticResource SmallLeftMargin}"/>
+                    </StackPanel>
+                </muxc:Expander.Header>
+                <muxc:Expander.Content>
+                    <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+                        <StackPanel Spacing="4">
+                            <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                            <StackPanel Margin="{StaticResource XSmallTopMargin}">
+                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind VersionDescription, Mode=OneWay}" />
+                                <TextBlock
+                                    x:Uid="Settings_AboutDescription"
+                                    Margin="{StaticResource XSmallTopMargin}"
+                                    Style="{ThemeResource BodyTextBlockStyle}" />
 
-            <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                                <HyperlinkButton Content="项目地址" NavigateUri="https://github.com/zxbmmmmmmmmm/ITHome" Margin="{StaticResource XSmallTopMargin}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
 
-            <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind VersionDescription, Mode=OneWay}" />
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
+                </muxc:Expander.Content>
+            </muxc:Expander>
 
-                <HyperlinkButton x:Uid="Settings_PrivacyTermsLink" Margin="{StaticResource XSmallTopMargin}" />
-            </StackPanel>
-            <Button Content="登录" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Page>

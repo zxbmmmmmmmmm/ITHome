@@ -24,9 +24,11 @@ namespace ITHome.Views.Dialogs
 {
     public sealed partial class LoginDialog : ContentDialog
     {
-        public LoginDialog()
+        public bool IsLogout;
+        public LoginDialog(bool isLogout = false)
         {
             this.InitializeComponent();
+            IsLogout = isLogout;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -34,14 +36,16 @@ namespace ITHome.Views.Dialogs
             Hide();
         }
 
-        private void LoginWebview_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-        
-        }
 
         private async void LoginWebview2_NavigationCompleted(Microsoft.UI.Xaml.Controls.WebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs args)
         {
-
+            if(IsLogout)
+            {
+                LoginWebview2.CoreWebView2.CookieManager.DeleteAllCookies();
+                new Toast("已退出").Show();
+                Hide();
+                return;
+            }
             IReadOnlyList<CoreWebView2Cookie> cookieList = await sender.CoreWebView2.CookieManager.GetCookiesAsync("https://my.ruanmei.com/Default.aspx/LoginUser");
             StringBuilder cookieResult = new StringBuilder(cookieList.Count + " cookie(s) received from https://www.bing.com\n");
             List<CoreWebView2Cookie> result = new List<CoreWebView2Cookie>();
@@ -54,6 +58,8 @@ namespace ITHome.Views.Dialogs
                 {
                     Common.Settings.UserHash = cookieList[i].Value.Replace("hash=","");
                     new Toast("已登录").Show();
+                    var shell = Window.Current.Content as ShellPage;
+                    shell.GetUser();
                     Hide();
                     return;
                 }

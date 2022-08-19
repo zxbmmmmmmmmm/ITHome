@@ -15,15 +15,15 @@
             x:Name="AppTitleBar"
             Height="40"
             Margin="92,0,0,0"
-            Padding="0,8,0,0"
+            Padding="0,0,0,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
             Background="Transparent"
             Canvas.ZIndex="1"
             IsHitTestVisible="True" Visibility="Visible">
             <Grid>
-                <TextBlock x:Name="PageNameTextBlock" Text="{x:Bind Selected.Tag,Mode=OneWay}" FontWeight="SemiBold" Margin="0,6,0,0" FontSize="14" Canvas.ZIndex="-1" x:FieldModifier="Public" HorizontalAlignment="Left" />
-                <StackPanel x:Name="TitieBarContent" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,0" Visibility="Collapsed">
+                <TextBlock x:Name="PageNameTextBlock" Text="{x:Bind Selected.Tag,Mode=OneWay}" FontWeight="SemiBold" Margin="0,14,0,0" FontSize="14" Canvas.ZIndex="-1" x:FieldModifier="Public" HorizontalAlignment="Left" />
+                <StackPanel x:Name="TitieBarContent" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,8,0,0" Visibility="Collapsed">
                     <StackPanel.Transitions>
                         <TransitionCollection>
                             <RepositionThemeTransition/>
@@ -45,8 +45,8 @@
                         TextWrapping="NoWrap"
                         Text="IT之家"/>
                 </StackPanel>
-            </Grid>
 
+            </Grid>
         </Border>
         <winui:NavigationView
             x:Name="navigationView"
@@ -87,7 +87,9 @@
                         </FontIcon>
                         <TextBlock Text="设置" HorizontalAlignment="Center" Margin="0,1,0,0" FontSize="10" Visibility="{x:Bind SettingsItem.IsSelected,Converter={StaticResource BoolVisibilityNegationConverter},Mode=OneWay}"/>
                     </StackPanel>
+ 
                 </winui:NavigationViewItem>
+                
             </winui:NavigationView.FooterMenuItems>
           
             <Grid>
