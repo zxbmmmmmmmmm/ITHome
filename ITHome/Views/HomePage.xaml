@@ -52,7 +52,7 @@
                         Grid.Row="1"
                         IsItemClickEnabled="True"
                         ItemClick="OnItemClick"
-                        ItemsSource="{x:Bind NewsList,Mode=OneWay}"
+                        ItemsSource="{x:Bind NewsList,Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemExpanded}"
                         SelectedItem="{x:Bind Selected, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="NewsListView_SelectionChanged">
                         <ListView.Header>
                             <Grid>

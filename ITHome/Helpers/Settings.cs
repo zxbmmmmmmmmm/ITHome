@@ -34,7 +34,42 @@ namespace ITHome.Helpers
                 OnPropertyChanged();
             }
         }
-
+        public string Platform
+        {
+            get => GetSettings("Platform", "uwp");
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["Platform"] = value;
+                OnPropertyChanged();
+            }
+        }
+        public int Client
+        {
+            get => GetSettings("Client", 7);
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["Client"] = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Model
+        {
+            get => GetSettings("Model", "");
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["Model"] = value;
+                OnPropertyChanged();
+            }
+        }
+        public Product Product
+        {
+            get => GetSettingsWithClass("Product", Product.UnknownProduct());
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["Product"] = JsonHelper.GetJsonByObject(value);
+                OnPropertyChanged();
+            }
+        }
         public UserInfo LoggedUser
         {
             get => GetSettingsWithClass("LoggedUser", UserInfo.NotLoggedUser());

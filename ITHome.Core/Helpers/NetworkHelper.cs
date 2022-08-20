@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,9 +11,11 @@ namespace ITHome.Core.Helpers
 {
     public class NetworkHelper
     {
-        public static async Task<JObject> GetAsync(string link, string token)
+        public static async Task<JObject> GetAsync(string link, string token, string model = null)
         {
             var client = new HttpClient();
+            if (model != null)
+                client.DefaultRequestHeaders.Add("x-model", model);
             client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:80.0) Gecko/20100101 Firefox/80.0");
             client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
             client.DefaultRequestHeaders.Add("Keep-Alive", "timeout=600");
@@ -34,11 +37,11 @@ namespace ITHome.Core.Helpers
             result = TextEncoding.GetUtf8RemovedBomString(result);
             return JArray.Parse(result);
         }
-        public static async Task<JObject> PostWithJsonAsync(string link, string json, string token, string referer = null)
+        public static async Task<JObject> PostWithJsonAsync(string link, string json, string token, string model = null)
         {
             var client = new HttpClient();
-            if (referer != null)
-                client.DefaultRequestHeaders.Add("referer", referer);
+            if (model != null)
+                client.DefaultRequestHeaders.Add("x-model", model);
 
             client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:80.0) Gecko/20100101 Firefox/80.0");//模拟浏览器
             client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");

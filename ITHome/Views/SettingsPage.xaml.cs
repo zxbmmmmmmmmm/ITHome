@@ -100,5 +100,11 @@ namespace ITHome.Views
         {
             await new LoginDialog().ShowAsync();
         }
+
+        private async void GetProductInfoBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Common.Settings.Product = await ITHomeProxy.GetProduct();
+            new Toast("已更新").Show();
+        }
     }
 }

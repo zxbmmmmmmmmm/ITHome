@@ -41,6 +41,41 @@
                     </Grid>
                 </muxc:Expander.Content>
             </muxc:Expander>
+            <TextBlock Text="发帖" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="{StaticResource SmallTopMargin}"/>
+            <muxc:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="{StaticResource SmallTopMargin}" Visibility="{x:Bind helper:Common.Settings.LoggedUser.Mobile,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}">
+                <muxc:Expander.Header>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <FontIcon Glyph="&#xE15E;" />
+                            <TextBlock Text="小尾巴" Margin="{StaticResource SmallLeftMargin}"/>
+                        </StackPanel>
+                        <TextBlock Text="{x:Bind helper:Common.Settings.Product.Name,Mode=OneWay}" HorizontalAlignment="Right"/>
+                    </Grid>
+                </muxc:Expander.Header>
+                <muxc:Expander.Content>
+                    <Grid RowSpacing="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+
+                        </Grid.RowDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="客户端编号"/>
+                            <TextBlock Text="6-WAP,7-Windows,8-Android " Style="{StaticResource DetailBodyBaseMediumStyle}" FontSize="14"/>
+
+                        </StackPanel>
+                        <muxc:NumberBox Value="{x:Bind helper:Common.Settings.Client,Mode=TwoWay}"  Width="256" HorizontalAlignment="Right" SmallChange="1" SpinButtonPlacementMode="Inline" VerticalAlignment="Center" Minimum="1" />
+                        <TextBlock Text="客户端" VerticalAlignment="Center"  Grid.Row="1"/>
+                        <TextBox Text="{x:Bind helper:Common.Settings.Platform,Mode=TwoWay}" Width="256" HorizontalAlignment="Right"  Grid.Row="1"/>
+                        <TextBlock Text="型号" VerticalAlignment="Center" Grid.Row="2"/>
+                        <TextBox Text="{x:Bind helper:Common.Settings.Model,Mode=TwoWay}" Width="256" HorizontalAlignment="Right" Grid.Row="2"/>
+                        <Button x:Name="GetProductInfoBtn" Click="GetProductInfoBtn_Click" Content="获取设备信息" Grid.Row="3"/>
+                    </Grid>
+                </muxc:Expander.Content>
+            </muxc:Expander>
+            
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="{StaticResource SmallTopMargin}"/>
             <muxc:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
                 <muxc:Expander.Header>
@@ -87,6 +122,7 @@
 
                 </muxc:Expander.Content>
             </muxc:Expander>
+
             <TextBlock Text="关于" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="{StaticResource SmallTopMargin}"/>
             <muxc:Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
                 <muxc:Expander.Header>

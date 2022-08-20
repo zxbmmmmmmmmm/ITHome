@@ -96,7 +96,11 @@ namespace ITHome.Helpers
         {
             var jObj = await NetworkHelper.GetAsync($"https://cmt.ithome.com/api/comment/cancelvote?commentId={id}&typeId={type}&userhash={Common.Settings.UserHash}", Common.Settings.UserHash);
             return jObj;
-
+        }
+        public async static Task<Product> GetProduct()
+        {
+            var jObj = await NetworkHelper.GetAsync($"https://qapi.ithome.com/api/ku/getuserdevice?platform={Common.Settings.Platform}", Common.Settings.UserHash,Common.Settings.Model);
+            return Product.CreateFromJson(jObj["data"]["data"]["product"]);
         }
         public async static Task<CommentsList> GetCommentsList(int newsId, int cid)
         {
@@ -137,7 +141,7 @@ namespace ITHome.Helpers
         public async static Task<JObject> SubmitCommentAsync(CommentClient obj)
         {
             var json = JsonConvert.SerializeObject(obj, Formatting.None);
-            var data = await NetworkHelper.PostWithJsonAsync("https://cmt.ithome.com/apiv2/comment/submit?appver=821&platform=uwp", json, Common.Settings.UserHash);
+            var data = await NetworkHelper.PostWithJsonAsync($"https://cmt.ithome.com/apiv2/comment/submit?appver=821&platform={Common.Settings.Platform}", json, Common.Settings.UserHash,Common.Settings.Model);
             return data;
         }
         public static string GetCommentSn(string id)

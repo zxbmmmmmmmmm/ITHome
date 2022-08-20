@@ -208,27 +208,34 @@ namespace ITHome.Views
         {
             SubmitCommentBtn.IsEnabled = false;
 
-            var comment = new CommentClient
+            try
             {
-                device = "",
-                newsId = Item.Id,
-                client = 7,
-                elements = new List<CommentClientElement>()
-            };
-            var element = new CommentClientElement
-            {
-                content = CommentEdit.Text.ToString(),
-            };
-            comment.elements.Add(element);
-            var jObj = await ITHomeProxy.SubmitCommentAsync(comment);
+                var comment = new CommentClient
+                {
+                    device = "",
+                    newsId = NewsSearch.Id,
+                    client = Common.Settings.Client,
+                    elements = new List<CommentClientElement>()
+                };
+                var element = new CommentClientElement
+                {
+                    content = CommentEdit.Text.ToString(),
+                };
+                comment.elements.Add(element);
+                var jObj = await ITHomeProxy.SubmitCommentAsync(comment);
 
 
-            if ((bool)jObj["success"] == true)
-            {
-                CommentEdit.Text = "";
+                if ((bool)jObj["success"] == true)
+                {
+                    CommentEdit.Text = "";
+                }
+                new Toast(jObj["message"].ToString(), TimeSpan.FromSeconds(3)).Show();
             }
-            new Toast(jObj["message"].ToString(),TimeSpan.FromSeconds(3)).Show();
-            SubmitCommentBtn.IsEnabled = true;
+            finally
+            {
+                SubmitCommentBtn.IsEnabled = true;
+            }
+
         }
 
         private void LoadMoreButton_Click(object sender, RoutedEventArgs e)

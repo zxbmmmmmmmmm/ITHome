@@ -38,13 +38,20 @@ namespace ITHome.Views.Controls
             get { return (Comment)GetValue(CommentProperty); }
             set { SetValue(CommentProperty, value); }
         }
-        public static readonly DependencyProperty CommentProperty = DependencyProperty.Register("Comment", typeof(Comment), typeof(CommentTemplate), new PropertyMetadata(null));
+        public static readonly DependencyProperty CommentProperty = DependencyProperty.Register("Comment", typeof(Comment), typeof(CommentTemplate), new PropertyMetadata(null,OnItemPropertyChanged));
 
         private async void ExpandButton_Click(object sender, RoutedEventArgs e)
         {
             await new CommentContentDialog(Comment.Id).ShowAsync();
         }
-
+        private static void OnItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as CommentTemplate;
+            control.ReplyGrid.Visibility = Visibility.Collapsed;
+            control.IsExpanded = false;
+            control.DownvoteBtn.IsChecked = false;
+            control.UpvoteBtn.IsChecked = false;
+        }
         private void ReplyBtn_Click(object sender, RoutedEventArgs e)
         {
             if (IsExpanded)
@@ -66,7 +73,7 @@ namespace ITHome.Views.Controls
             {
                 device = "",
                 newsId = Comment.NewsId,
-                client = 7,
+                client = Common.Settings.Client,
                 elements = new List<CommentClientElement>(),
                 replyCommentId = Comment.Id
             };

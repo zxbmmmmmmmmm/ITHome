@@ -48,7 +48,6 @@ namespace ITHome.Views
         {
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
-            RequestedTheme = (Window.Current.Content as FrameworkElement).RequestedTheme;
             _timer.Tick += ChangeImage;
             _timer.Start();
         }
@@ -61,9 +60,9 @@ namespace ITHome.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
             base.OnNavigatedTo(e);
-            if(NewsList.Count == 0)
+            RequestedTheme = (Window.Current.Content as FrameworkElement).RequestedTheme;
+            if (NewsList.Count == 0)
             {
                 NewsList.Clear();
                 GetNewsList();
