@@ -10,58 +10,66 @@
     xmlns:models="using:ITHome.Core.Models"
     xmlns:controls1="using:ITHome.Views.Controls"
     xmlns:helpers="using:ITHome.Helpers"
+    xmlns:richtext="using:RichTextControls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
     <ScrollViewer x:Name="MainScrollViewer">
         <Grid Margin="0,0,0,48">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="2" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" Visibility="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource NullToVisibilityInversionConverter}}">
-                <FontIcon Glyph="&#xF57E;" FontSize="80" Foreground="{StaticResource SystemAccentColorDark2}"/>
-                <TextBlock Text="点击左侧列表以查看" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
-            </StackPanel>
-           
-            <StackPanel Margin="32,32,32,0" Spacing="4">
-                <TextBlock Text="{x:Bind NewsSearch.Title,Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind NewsSearch.PostDate,Converter={StaticResource DateConverter},Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
-                    
-                    <TextBlock Text="{x:Bind NewsSearch.Author,Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" Margin="8,0,0,0"/>
 
+
+            <Grid>
+                <muxc:ProgressRing x:Name="LoadingProgressRing" Height="80" Width="80" VerticalAlignment="Center" Grid.Row="1" Visibility="Collapsed"/>
+
+            </Grid>
+            <Grid Name="ContentGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="2" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" Visibility="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource NullToVisibilityInversionConverter}}">
+                    <FontIcon Glyph="&#xF57E;" FontSize="80" Foreground="{StaticResource SystemAccentColorDark2}"/>
+                    <TextBlock Text="点击左侧列表以查看" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
                 </StackPanel>
-            </StackPanel>
-            <RichTextBlock html:HtmlProperties.Html="{x:Bind NewsSearch.Detail,Mode=OneWay}" Grid.Row="1" FontSize="16" VerticalAlignment="Top" Margin="32,0" />
-            <controls:MarkdownTextBlock Text="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource HtmlToMarkdownConverter}}" Grid.Row="1" VerticalAlignment="Top" Margin="32,0" FontSize="16" muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Visibility="Collapsed"/>
 
-            <StackPanel Grid.Row="2" Margin="24,12" Visibility="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
-                <StackPanel HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}" >
-                        <muxc:RatingControl IsReadOnly="True" Visibility="Visible" Value="{x:Bind NewsGrade.Grade,Mode=OneWay}"/>
-                        <TextBlock Text="{x:Bind NewsGrade.GradeStr,Mode=OneWay}" Margin="0,4,0,0" FontSize="15"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind helpers:Common.Settings.LoggedUser.Mobile,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
-                        <ToggleButton x:Name="NewsGradeUp" Click="NewsGradeUp_Click">
+                <StackPanel Margin="32,32,32,0" Spacing="4">
+                    <TextBlock Text="{x:Bind NewsSearch.Title,Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind NewsSearch.PostDate,Converter={StaticResource DateConverter},Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}"/>
 
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE010;" FontSize="16"/>
-                                <TextBlock Text="有价值" FontSize="15" Margin="{StaticResource XSmallLeftMargin}"/>
-                                <TextBlock Text="{x:Bind NewsGrade.ValuableCount,Mode=OneWay}" FontSize="15" Margin="{StaticResource XSmallLeftMargin}" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
-                            </StackPanel>
-                        </ToggleButton>
-                        <ToggleButton x:Name="NewsGradeDown" Click="NewsGradeDown_Click">
-                            <StackPanel Orientation="Horizontal" >
-                                <FontIcon Glyph="&#xE011;" FontSize="16"/>
-                                <TextBlock Text="无价值" FontSize="15" Margin="{StaticResource XSmallLeftMargin}"/>
-                                <TextBlock Text="{x:Bind NewsGrade.WorthLessCount,Mode=OneWay}" FontSize="15" Margin="{StaticResource XSmallLeftMargin}" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
-                            </StackPanel>
-                        </ToggleButton>
+                        <TextBlock Text="{x:Bind NewsSearch.Author,Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" Margin="8,0,0,0"/>
+
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Text="推荐阅读" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8" />
-                <ListView x:Name="RelatedNewsListView"
+                <RichTextBlock html:HtmlProperties.Html="{x:Bind NewsSearch.Detail,Mode=OneWay}" Grid.Row="1" FontSize="16" VerticalAlignment="Top" Margin="32,0" Visibility="Collapsed"/>
+                <richtext:HtmlTextBlock x:Name="HtmlBlock" Html="{x:Bind NewsSearch.Detail,Mode=OneWay}" Grid.Row="1"  Margin="32,4,32,0"/>
+
+                <StackPanel Grid.Row="2" Margin="24,12" Visibility="{x:Bind NewsSearch.Detail,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
+                    <StackPanel HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}" >
+                            <muxc:RatingControl IsReadOnly="True" Visibility="Visible" Value="{x:Bind NewsGrade.Grade,Mode=OneWay}"/>
+                            <TextBlock Text="{x:Bind NewsGrade.GradeStr,Mode=OneWay}" Margin="0,4,0,0" FontSize="15"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind helpers:Common.Settings.LoggedUser.Mobile,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
+                            <ToggleButton x:Name="NewsGradeUp" Click="NewsGradeUp_Click">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Glyph="&#xE010;" FontSize="16"/>
+                                    <TextBlock Text="有价值" FontSize="15" Margin="{StaticResource XSmallLeftMargin}"/>
+                                    <TextBlock Text="{x:Bind NewsGrade.ValuableCount,Mode=OneWay}" FontSize="15" Margin="{StaticResource XSmallLeftMargin}" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
+                                </StackPanel>
+                            </ToggleButton>
+                            <ToggleButton x:Name="NewsGradeDown" Click="NewsGradeDown_Click">
+                                <StackPanel Orientation="Horizontal" >
+                                    <FontIcon Glyph="&#xE011;" FontSize="16"/>
+                                    <TextBlock Text="无价值" FontSize="15" Margin="{StaticResource XSmallLeftMargin}"/>
+                                    <TextBlock Text="{x:Bind NewsGrade.WorthLessCount,Mode=OneWay}" FontSize="15" Margin="{StaticResource XSmallLeftMargin}" Visibility="{x:Bind NewsGrade.Grade,Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
+                                </StackPanel>
+                            </ToggleButton>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock Text="推荐阅读" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8" />
+                    <ListView x:Name="RelatedNewsListView"
                           SelectionMode="None"
                           HorizontalAlignment="Stretch"
                           MaxHeight="312"
@@ -70,56 +78,58 @@
                           HorizontalContentAlignment="Stretch"
                           IsItemClickEnabled="True"
                           ItemClick="RelatedNewsListView_ItemClick">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:News">
-                            <controls1:NewsControl Item="{x:Bind Mode=OneWay}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <StackPanel Margin="{StaticResource SmallTopMargin}" Spacing="8" Visibility="{x:Bind helpers:Common.Settings.LoggedUser.Mobile,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
-                    <TextBox x:Name="CommentEdit"                      
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:News">
+                                <controls1:NewsControl Item="{x:Bind Mode=OneWay}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackPanel Margin="{StaticResource SmallTopMargin}" Spacing="8" Visibility="{x:Bind helpers:Common.Settings.LoggedUser.Mobile,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}">
+                        <TextBox x:Name="CommentEdit"                      
                          Height="64"
                          Grid.Column="0"
                          AcceptsReturn="True"
                          PlaceholderText="发布评论"
                          TextWrapping="Wrap" />
-                    <Grid>
-                        <TextBlock Text="{x:Bind helpers:Common.Settings.LoggedUser.NickName,Mode=OneWay}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button x:Name="SubmitCommentBtn" Content="发布" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" Click="SubmitCommentBtn_Click"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-
-                <StackPanel x:Name="HotCommentsHeader" Spacing="4" Visibility="Collapsed" Margin="{StaticResource SmallTopMargin}">
-                    <TextBlock Text="热评" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8"/>
-                </StackPanel>
-
-                <ListView x:Name="HotCommentsListView" SelectionMode="None">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Comment">
-                            <controls1:CommentTemplate Comment="{x:Bind Mode=OneWay}" Margin="{StaticResource SmallTopBottomMargin}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                
-                <StackPanel x:Name="CommentsHeader" Spacing="4" Visibility="Collapsed">
-                    <TextBlock Text="所有评论" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8" />
-                </StackPanel>
-                
-                <ListView x:Name="CommentsListView" Grid.Row="2" SelectionMode="None">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Comment">
-                            <controls1:CommentTemplate Comment="{x:Bind Mode=OneWay}" Margin="{StaticResource SmallTopBottomMargin}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
                         <Grid>
-                            <Button x:Name="LoadMoreButton" Click="LoadMoreButton_Click" Content="加载更多" HorizontalAlignment="Stretch" FontSize="17" Margin="{StaticResource SmallLeftRightMargin}" MaxWidth="512"/>
+                            <TextBlock Text="{x:Bind helpers:Common.Settings.LoggedUser.NickName,Mode=OneWay}" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                <Button x:Name="SubmitCommentBtn" Content="发布" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}" Click="SubmitCommentBtn_Click"/>
+                            </StackPanel>
                         </Grid>
-                    </ListView.Footer>
-                </ListView>
-            </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel x:Name="HotCommentsHeader" Spacing="4" Visibility="Collapsed" Margin="{StaticResource SmallTopMargin}">
+                        <TextBlock Text="热评" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8"/>
+                    </StackPanel>
+
+                    <ListView x:Name="HotCommentsListView" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Comment">
+                                <controls1:CommentTemplate Comment="{x:Bind Mode=OneWay}" Margin="{StaticResource SmallTopBottomMargin}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <StackPanel x:Name="CommentsHeader" Spacing="4" Visibility="Collapsed">
+                        <TextBlock Text="所有评论" Style="{StaticResource SubtitleTextBlockStyle}" Margin="8" />
+                    </StackPanel>
+
+                    <ListView x:Name="CommentsListView" Grid.Row="2" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Comment">
+                                <controls1:CommentTemplate Comment="{x:Bind Mode=OneWay}" Margin="{StaticResource SmallTopBottomMargin}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Footer>
+                            <Grid>
+                                <Button x:Name="LoadMoreButton" Click="LoadMoreButton_Click" Content="加载更多" HorizontalAlignment="Stretch" FontSize="17" Margin="{StaticResource SmallLeftRightMargin}" MaxWidth="512"/>
+                            </Grid>
+                        </ListView.Footer>
+                    </ListView>
+                </StackPanel>
+
+            </Grid>
 
         </Grid>
     </ScrollViewer>

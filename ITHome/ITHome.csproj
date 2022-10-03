@@ -126,6 +126,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AngleSharp">
+      <Version>0.9.9</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
@@ -379,6 +382,10 @@
     <ProjectReference Include="..\ITHome.Core\ITHome.Core.csproj">
       <Project>{0E92D9E8-B10F-41E8-825D-69CF7FFF8F34}</Project>
       <Name>ITHome.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RichTextControls\RichTextControls.csproj">
+      <Project>{e3bd6f6f-b39e-4180-8182-dfe85c780bf4}</Project>
+      <Name>RichTextControls</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

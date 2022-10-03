@@ -10,6 +10,7 @@ using Windows.Media.Protection.PlayReady;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -25,6 +26,7 @@ namespace ITHome.Views
         public NewsDetailPage()
         {
             this.InitializeComponent();
+            HtmlBlock.ImageTapped += HtmlBlock_ImageTapped;
             this.DataContextChanged += (s, e) => Bindings.Update();
         }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -90,11 +92,23 @@ namespace ITHome.Views
             }
             base.OnNavigatedTo(e);
         }
+
+        private void HtmlBlock_ImageTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            var image = e.OriginalSource as Image;
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("ForwardConnectedAnimation", (UIElement)e.OriginalSource);
+            new ImageView().Show(image.Tag.ToString());
+        }
+
         public async void GetNewsSearch()
         {
             Comments.Clear();
+            if(RelatedNews.NewsItem!=null)
+                RelatedNews.NewsItem.Clear();
             NewsGradeUp.IsChecked = false;
             NewsGradeDown.IsChecked = false;
+            ContentGrid.Visibility = Visibility.Collapsed;
+            LoadingProgressRing.Visibility = Visibility.Visible;
             NewsGrade = new NewsGrade { GradeStr = "未知", Grade =0 };
             MainScrollViewer.ChangeView(MainScrollViewer.HorizontalOffset, 0, MainScrollViewer.ZoomFactor);
             if (Item != null)
@@ -115,9 +129,14 @@ namespace ITHome.Views
                 id = split[length - 2] + split[length - 1].Replace(".htm", "");
             }
             NewsSearch = await ITHomeProxy.GetNewsSearch(id);
-
+            HtmlBlock.Html = NewsSearch.Detail;
+            HtmlBlock.ApplyTemplate();
             GetComments(0);
             GetRelatedNews();
+            LoadingProgressRing.Visibility = Visibility.Collapsed;
+            ContentGrid.Visibility = Visibility.Visible;
+
+
         }
         public async void GetRelatedNews()
         {
